@@ -1,7 +1,7 @@
 #![feature(const_trait_impl)]
 pub mod command_types;
 
-use telemetry_system::*;
+use tmtc_system::*;
 
 #[telemetry_definition]
 mod telecommands {
@@ -63,23 +63,29 @@ mod telemetry {
 }
 
 beacon!(LowRateTelemetry, telemetry,
-    Timestamp, 
-    lst::Uptime,
-    lst::Rssi,
-    lst::Lqi,
-    lst::PacketsSend,
-    lst::PacketsGood,
-    lst::PacketsBadChecksum,
-    lst::PacketsBadOther
+    header(0, 1, 2, 3),
+    telemetry(
+        Timestamp, 
+        lst::Uptime,
+        lst::Rssi,
+        lst::Lqi,
+        lst::PacketsSend,
+        lst::PacketsGood,
+        lst::PacketsBadChecksum,
+        lst::PacketsBadOther
+    )
 );
 
 beacon!(MidRateTelemetry, telemetry,
-    Timestamp, 
-    eps::EnableBitmap,
-    eps::AuxPowerVoltage,
-    eps::InternalTemperature,
-    eps::Bat1Voltage,
-    eps::Bat1Temperature,
-    eps::Bat2Voltage,
-    eps::Bat2Temperature
+    header(0, 1, 2, 3),
+    telemetry(
+        Timestamp, 
+        eps::EnableBitmap,
+        eps::AuxPowerVoltage,
+        eps::InternalTemperature,
+        eps::Bat1Voltage,
+        eps::Bat1Temperature,
+        eps::Bat2Voltage,
+        eps::Bat2Temperature
+    )
 );

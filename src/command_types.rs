@@ -1,4 +1,4 @@
-use telemetry_system::*;
+use tmtc_system::*;
 
 // this is temporary
 #[derive(TMValue, Default)]
