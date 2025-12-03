@@ -1,3 +1,4 @@
+#![no_std]
 #![feature(const_trait_impl)]
 pub mod command_types;
 
@@ -10,7 +11,7 @@ mod telecommands {
 }
 
 #[telemetry_definition]
-mod telemetry {
+pub mod telemetry {
 
     #[tmv(i64, id = 0)]
     struct Timestamp;
