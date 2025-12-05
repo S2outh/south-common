@@ -71,7 +71,7 @@ pub mod telemetry {
 }
 
 beacon!(LowRateTelemetry, telemetry,
-    header(0, 1, 2, 3),
+    header(0x4E, 0x4A, 1, 0, 37, 0, 0),
     telemetry(
         Timestamp, 
         lst::Uptime,
@@ -85,7 +85,7 @@ beacon!(LowRateTelemetry, telemetry,
 );
 
 beacon!(MidRateTelemetry, telemetry,
-    header(0, 1, 2, 3),
+    header(0x4E, 0x4A, 2, 0, 28, 0, 0),
     telemetry(
         Timestamp, 
         eps::EnableBitmap,
