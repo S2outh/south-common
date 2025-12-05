@@ -2,7 +2,14 @@
 #![feature(const_trait_impl)]
 pub mod command_types;
 
-pub use tmtc_system::*;
+use tmtc_system::*;
+// public reexports
+pub use tmtc_system::TMValue;
+pub use tmtc_system::DynTMValue;
+pub use tmtc_system::DynBeacon;
+pub use tmtc_system::DynTelemetryDefinition;
+pub use low_rate_telemetry::LowRateTelemetry;
+pub use mid_rate_telemetry::MidRateTelemetry;
 
 #[telemetry_definition]
 mod telecommands {
