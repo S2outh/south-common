@@ -27,6 +27,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "south-common"
+version = "0.2.0"
+dependencies = [
+ "tmtc-system",
+]
+
+[[package]]
 name = "syn"
 version = "2.0.111"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -38,16 +45,9 @@ dependencies = [
 ]
 
 [[package]]
-name = "tmtc-definitions"
-version = "0.1.0"
-dependencies = [
- "tmtc-system",
-]
-
-[[package]]
 name = "tmtc-system"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#23f1397c32be30d58d7b458183c0e1367a92a290"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#4f183a004028cbe8214648e228198aec8e717a3b"
 dependencies = [
  "tmtc-system-macros",
 ]
@@ -55,7 +55,7 @@ dependencies = [
 [[package]]
 name = "tmtc-system-macros"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#23f1397c32be30d58d7b458183c0e1367a92a290"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#4f183a004028cbe8214648e228198aec8e717a3b"
 dependencies = [
  "heck",
  "proc-macro2",

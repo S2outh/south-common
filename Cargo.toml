@@ -1,6 +1,6 @@
 [package]
-name = "tmtc-definitions"
-version = "0.1.0"
+name = "south-common"
+version = "0.2.0"
 edition = "2024"
 
 [dependencies]
