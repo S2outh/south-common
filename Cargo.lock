@@ -4,9 +4,9 @@ version = 4
 
 [[package]]
 name = "aligned"
-version = "0.4.2"
+version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "377e4c0ba83e4431b10df45c1d4666f178ea9c552cac93e60c3a88bf32785923"
+checksum = "ee4508988c62edf04abd8d92897fca0c2995d907ce1dfeaf369dac3716a40685"
 dependencies = [
  "as-slice",
 ]
@@ -667,7 +667,7 @@ dependencies = [
 [[package]]
 name = "tmtc-system"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#4f183a004028cbe8214648e228198aec8e717a3b"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#0918d434aab1df19fede3081b19c4778da3212b6"
 dependencies = [
  "tmtc-system-macros",
 ]
@@ -675,7 +675,7 @@ dependencies = [
 [[package]]
 name = "tmtc-system-macros"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#4f183a004028cbe8214648e228198aec8e717a3b"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#0918d434aab1df19fede3081b19c4778da3212b6"
 dependencies = [
  "heck",
  "proc-macro2",
