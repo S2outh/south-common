@@ -1,6 +1,6 @@
 use tmtc_system::*;
 
-beacon!(LowRateTelemetry,
+beacon!(LSTBeacon,
     crate::definitions::telemetry::lst,
     crate::definitions::telemetry::Timestamp,
     id = 0,
@@ -16,7 +16,7 @@ beacon!(LowRateTelemetry,
 );
 
 
-beacon!(MidRateTelemetry,
+beacon!(EPSBeacon,
     crate::definitions::telemetry::eps,
     crate::definitions::telemetry::Timestamp,
     id = 1,
@@ -31,7 +31,7 @@ beacon!(MidRateTelemetry,
     )
 );
 
-beacon!(HighRateTelemetry,
+beacon!(SensorboardBeacon,
     crate::definitions::telemetry::upper_sensor,
     crate::definitions::telemetry::Timestamp,
     id = 2,
@@ -46,7 +46,6 @@ beacon!(HighRateTelemetry,
         imu2::Temp,
         baro::Pressure,
         baro::Temp,
-        InternalTemperature // putting this here is nonsensical and pending a better beacon
-                            // sorting system
+        InternalTemperature
     )
 );

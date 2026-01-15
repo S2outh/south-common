@@ -14,9 +14,9 @@ pub enum LSTCommand {
 
 #[derive(TMValue)]
 pub enum EPSCommand {
-    SetSource(FlipFlopState, Option::<u8>),
-    EnableSink(Sink, Option::<u8>),
-    DisableSink(Sink, Option::<u8>),
+    SetSource(FlipFlopState, Option<u8>),
+    EnableSink(Sink, Option<u8>),
+    DisableSink(Sink, Option<u8>),
 }
 
 #[derive(TMValue, Clone, Copy)]
@@ -33,13 +33,4 @@ pub enum Sink {
     SensorUpper,
     GPS,
     RocketHD,
-}
-
-// # Vector types
-#[derive(TMValue, Default, Copy, Clone)]
-#[cfg_attr(feature = "serde", derive(serde::Serialize, Debug))]
-pub struct Vec3I16 {
-    x: i16,
-    y: i16,
-    z: i16,
 }

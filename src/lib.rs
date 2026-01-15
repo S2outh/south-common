@@ -15,6 +15,6 @@ pub mod can_config;
 // public reexports
 pub use definitions::{telemetry, telecommands};
 pub use tmtc_system::*;
-pub use beacons::low_rate_telemetry::LowRateTelemetry;
-pub use beacons::mid_rate_telemetry::MidRateTelemetry;
-pub use beacons::high_rate_telemetry::HighRateTelemetry;
+pub use beacons::lst_beacon::LSTBeacon;
+pub use beacons::eps_beacon::EPSBeacon;
+pub use beacons::sensorboard_beacon::SensorboardBeacon;
