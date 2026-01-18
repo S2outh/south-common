@@ -1,6 +1,7 @@
 use tmtc_system::*;
 
-beacon!(LSTBeacon,
+beacon!(
+    LSTBeacon,
     crate::definitions::telemetry::lst,
     crate::definitions::telemetry::Timestamp,
     id = 0,
@@ -15,8 +16,8 @@ beacon!(LSTBeacon,
     )
 );
 
-
-beacon!(EPSBeacon,
+beacon!(
+    EPSBeacon,
     crate::definitions::telemetry::eps,
     crate::definitions::telemetry::Timestamp,
     id = 1,
@@ -31,7 +32,8 @@ beacon!(EPSBeacon,
     )
 );
 
-beacon!(SensorboardBeacon,
+beacon!(
+    SensorboardBeacon,
     crate::definitions::telemetry::upper_sensor,
     crate::definitions::telemetry::Timestamp,
     id = 2,

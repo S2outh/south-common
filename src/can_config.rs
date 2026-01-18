@@ -1,12 +1,14 @@
-use embassy_stm32::can::{self, BufferedCanFd, CanConfigurator, RxFdBuf, TxFdBuf, filter::{FilterType, StandardFilter}};
+use embassy_stm32::can::{
+    self, BufferedCanFd, CanConfigurator, RxFdBuf, TxFdBuf,
+    filter::{FilterType, StandardFilter},
+};
 use embedded_can::StandardId;
 use heapless::Vec;
-
 
 /// Can peripheral in configuration stage
 pub struct CanPeriphConfig<'d> {
     filters: Vec<StandardFilter, 28>,
-    configurator: CanConfigurator<'d>
+    configurator: CanConfigurator<'d>,
 }
 
 /// Marker struct for the error mode that can filters are full
@@ -28,9 +30,7 @@ impl<'d> CanPeriphConfig<'d> {
     /// ```
     /// pub fn add_receive_topic(&mut self, topic: u16)
     /// ```
-    pub fn new(
-        mut configurator: CanConfigurator<'d>,
-    ) -> Self {
+    pub fn new(mut configurator: CanConfigurator<'d>) -> Self {
         // reject all can Ids by default
         configurator.set_config(
             can::config::FdCanConfig::default()
@@ -41,24 +41,27 @@ impl<'d> CanPeriphConfig<'d> {
 
         let filters = Vec::new();
         Self {
-            filters, 
+            filters,
             configurator,
         }
     }
     /// # add topic filter
     pub fn add_receive_topic(&mut self, topic: u16) -> Result<&mut Self, FiltersFullError> {
-        let filter = FilterType::DedicatedSingle(
-            StandardId::new(topic).unwrap(),
-        );
+        let filter = FilterType::DedicatedSingle(StandardId::new(topic).unwrap());
         let standard_filter = StandardFilter {
             filter,
             action: can::filter::Action::StoreInFifo0,
         };
-        self.filters.push(standard_filter).map_err(|_| FiltersFullError)?;
+        self.filters
+            .push(standard_filter)
+            .map_err(|_| FiltersFullError)?;
         Ok(self)
     }
     /// # add topic filter range
-    pub fn add_receive_topic_range(&mut self, range: (u16, u16)) -> Result<&mut Self, FiltersFullError> {
+    pub fn add_receive_topic_range(
+        &mut self,
+        range: (u16, u16),
+    ) -> Result<&mut Self, FiltersFullError> {
         // Can filter ranges are inverted in embassy (from high to low)
         // I don't know if this is due to bosch engineers beeing high or due to embassy devs being
         // high, however I do know that _someone_ was high.
@@ -70,7 +73,9 @@ impl<'d> CanPeriphConfig<'d> {
             filter,
             action: can::filter::Action::StoreInFifo0,
         };
-        self.filters.push(standard_filter).map_err(|_| FiltersFullError)?;
+        self.filters
+            .push(standard_filter)
+            .map_err(|_| FiltersFullError)?;
         Ok(self)
     }
     /// # Activate the can transmitter for sending and receiving
@@ -89,9 +94,8 @@ impl<'d> CanPeriphConfig<'d> {
             .set_standard_filters(&self.filters.into_array().unwrap());
 
         // initialize buffered can
-        self.configurator.into_normal_mode().buffered_fd(
-            tx_buf,
-            rx_buf
-        )
+        self.configurator
+            .into_normal_mode()
+            .buffered_fd(tx_buf, rx_buf)
     }
 }

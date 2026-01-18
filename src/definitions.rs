@@ -11,7 +11,7 @@ pub mod telemetry {
 
     #[tmv(i64)]
     struct Timestamp;
-    
+
     #[tmm(id = 100)]
     mod lst {
         #[tmv(u32)]
@@ -25,7 +25,7 @@ pub mod telemetry {
 
         #[tmv(u32)]
         struct PacketsSend;
-        
+
         #[tmv(u32)]
         struct PacketsGood;
 
@@ -40,7 +40,7 @@ pub mod telemetry {
     mod eps {
         #[tmv(u8)]
         struct EnableBitmap;
-        
+
         #[tmv(i16)]
         struct AuxPowerVoltage;
 
@@ -52,7 +52,7 @@ pub mod telemetry {
 
         #[tmv(i16)]
         struct Bat1Temperature;
-        
+
         #[tmv(i16)]
         struct Bat2Voltage;
 
@@ -65,7 +65,7 @@ pub mod telemetry {
         mod imu1 {
             #[tmv([i16; 3])]
             struct AccelLowRange;
-            
+
             #[tmv([i16; 3])]
             struct AccelFullRange;
 
@@ -75,11 +75,11 @@ pub mod telemetry {
             #[tmv(i16)]
             struct Temp;
         }
-        
+
         mod imu2 {
             #[tmv([i16; 3])]
             struct AccelLowRange;
-            
+
             #[tmv([i16; 3])]
             struct AccelFullRange;
 
@@ -89,7 +89,7 @@ pub mod telemetry {
             #[tmv(i16)]
             struct Temp;
         }
-        
+
         mod baro {
             #[tmv(i16)]
             struct Pressure;
@@ -102,4 +102,3 @@ pub mod telemetry {
         struct InternalTemperature;
     }
 }
-

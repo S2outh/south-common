@@ -27,6 +27,7 @@
           buildInputs = [
             rust
             pkgs.cargo-edit
+            pkgs.cargo-expand
           ];
         };
       }
