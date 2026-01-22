@@ -101,4 +101,19 @@ pub mod telemetry {
         #[tmv(i16)]
         struct InternalTemperature;
     }
+
+    #[tmm(id = 400)]
+    mod lower_sensor {
+        #[tmv(i16)]
+        struct Pressure1;
+
+        #[tmv(i16)]
+        struct Pressure2;
+
+        #[tmv(i16)]
+        struct Temp;
+
+        #[tmv(i16)]
+        struct AdcTemp;
+    }
 }
