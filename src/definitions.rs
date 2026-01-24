@@ -104,16 +104,16 @@ pub mod telemetry {
 
     #[tmm(id = 400)]
     mod lower_sensor {
-        #[tmv(i16)]
+        #[tmv(f32)]
         struct Pressure1;
 
-        #[tmv(i16)]
+        #[tmv(f32)]
         struct Pressure2;
 
-        #[tmv(i16)]
+        #[tmv(f32)]
         struct Temp;
 
-        #[tmv(i16)]
+        #[tmv(f32)]
         struct AdcTemp;
     }
 }
