@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     fenix = {
-      url = "github:nix-community/fenix";
+      url = "github:nix-community/fenix/monthly";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -21,11 +21,12 @@
       {
         devShells.default =
         let
-          rust = pkgs.fenix.latest.toolchain;
+          rust = pkgs.fenix.complete.toolchain;
         in
         pkgs.mkShell {
           buildInputs = [
             rust
+            
             pkgs.cargo-edit
             pkgs.cargo-expand
           ];

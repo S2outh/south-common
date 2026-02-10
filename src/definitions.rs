@@ -9,7 +9,7 @@ mod telecommands {
 #[telemetry_definition(id = 1)]
 pub mod telemetry {
 
-    #[tmv(i64)]
+    #[tmv(u64)]
     struct Timestamp;
 
     #[tmm(id = 100)]
@@ -88,6 +88,11 @@ pub mod telemetry {
 
             #[tmv(i16)]
             struct Temp;
+        }
+
+        mod gps {
+            #[tmv([f32; 3])]
+            struct Pos;
         }
 
         mod baro {

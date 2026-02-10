@@ -558,18 +558,18 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.105"
+version = "1.0.106"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "535d180e0ecab6268a3e718bb9fd44db66bbbc256257165fc699dadf70d16fe7"
+checksum = "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934"
 dependencies = [
  "unicode-ident",
 ]
 
 [[package]]
 name = "quote"
-version = "1.0.43"
+version = "1.0.44"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dc74d9a594b72ae6656596548f56f667211f8a97b3d4c3d467150794690dc40a"
+checksum = "21b2ebcf727b7760c461f091f9f0f539b77b8e87f2fd88131e7f1b433b3cece4"
 dependencies = [
  "proc-macro2",
 ]
@@ -733,8 +733,8 @@ dependencies = [
 
 [[package]]
 name = "tmtc-system"
-version = "3.0.2"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#972344f982126b68ae02d67ec103af2c7228bee7"
+version = "3.1.0"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#b70505b2771068393e4d217793707fde46f0923f"
 dependencies = [
  "serde",
  "tmtc-system-macros",
@@ -743,7 +743,7 @@ dependencies = [
 [[package]]
 name = "tmtc-system-macros"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/telemetry-system.git#972344f982126b68ae02d67ec103af2c7228bee7"
+source = "git+ssh://git@github.com/S2outh/telemetry-system.git#b70505b2771068393e4d217793707fde46f0923f"
 dependencies = [
  "heck",
  "proc-macro2",
