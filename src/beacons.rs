@@ -33,7 +33,7 @@ beacon!(
 );
 
 beacon!(
-    SensorboardBeacon,
+    HighRateUpperSensorBeacon,
     crate::definitions::telemetry::upper_sensor,
     crate::definitions::telemetry::Timestamp,
     id = 2,
@@ -41,12 +41,18 @@ beacon!(
         imu1::AccelLowRange,
         imu1::AccelFullRange,
         imu1::Gyro,
-        imu1::Temp,
-        imu2::AccelLowRange,
-        imu2::AccelFullRange,
-        imu2::Gyro,
-        imu2::Temp,
+        imu1::Temp
+    )
+);
+
+beacon!(
+    LowRateUpperSensorBeacon,
+    crate::definitions::telemetry::upper_sensor,
+    crate::definitions::telemetry::Timestamp,
+    id = 3,
+    telemetry(
         gps::Pos,
+        gps::Status,
         baro::Pressure,
         baro::Temp,
         InternalTemperature
@@ -57,7 +63,7 @@ beacon!(
     LowerSensorBeacon,
     crate::definitions::telemetry::lower_sensor,
     crate::definitions::telemetry::Timestamp,
-    id = 3,
+    id = 4,
     telemetry(
         Pressure1,
         Pressure2,

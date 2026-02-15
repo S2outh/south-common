@@ -12,7 +12,6 @@ pub mod telemetry {
     #[tmv(u64)]
     struct Timestamp;
 
-    #[tmm(id = 100)]
     mod lst {
         #[tmv(u32)]
         struct Uptime;
@@ -36,7 +35,6 @@ pub mod telemetry {
         struct PacketsBadOther;
     }
 
-    #[tmm(id = 200)]
     mod eps {
         #[tmv(u8)]
         struct EnableBitmap;
@@ -60,7 +58,6 @@ pub mod telemetry {
         struct Bat2Temperature;
     }
 
-    #[tmm(id = 300)]
     mod upper_sensor {
         mod imu1 {
             #[tmv([i16; 3])]
@@ -93,6 +90,9 @@ pub mod telemetry {
         mod gps {
             #[tmv([f32; 3])]
             struct Pos;
+
+            #[tmv(u8)]
+            struct Status;
         }
 
         mod baro {
@@ -107,7 +107,6 @@ pub mod telemetry {
         struct InternalTemperature;
     }
 
-    #[tmm(id = 400)]
     mod lower_sensor {
         #[tmv(i16)]
         struct Pressure1;

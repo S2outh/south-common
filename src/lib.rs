@@ -15,7 +15,8 @@ pub mod types;
 // public reexports
 pub use beacons::eps_beacon::EPSBeacon;
 pub use beacons::lst_beacon::LSTBeacon;
-pub use beacons::sensorboard_beacon::SensorboardBeacon;
+pub use beacons::low_rate_upper_sensor_beacon::LowRateUpperSensorBeacon;
+pub use beacons::high_rate_upper_sensor_beacon::HighRateUpperSensorBeacon;
 pub use beacons::lower_sensor_beacon::LowerSensorBeacon;
 pub use definitions::{telecommands, telemetry};
 pub use tmtc_system::*;
