@@ -9,7 +9,7 @@ beacon!(
         Uptime,
         Rssi,
         Lqi,
-        PacketsSend,
+        PacketsSent,
         PacketsGood,
         PacketsBadChecksum,
         PacketsBadOther

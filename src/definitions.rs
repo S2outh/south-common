@@ -23,7 +23,7 @@ pub mod telemetry {
         struct Lqi;
 
         #[tmv(u32)]
-        struct PacketsSend;
+        struct PacketsSent;
 
         #[tmv(u32)]
         struct PacketsGood;
