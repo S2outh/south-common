@@ -64,10 +64,5 @@ beacon!(
     crate::definitions::telemetry::lower_sensor,
     crate::definitions::telemetry::Timestamp,
     id = 4,
-    telemetry(
-        Pressure1,
-        Pressure2,
-        Temp,
-        AdcTemp
-    )
+    telemetry(Pressure1, Pressure2, Temp, AdcTemp)
 );

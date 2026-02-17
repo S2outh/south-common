@@ -36,25 +36,25 @@ pub mod telemetry {
     }
 
     mod eps {
-        #[tmv(u8)]
+        #[tmv(u8, enabled = |v: &u8| crate::types::EPSEnabled::from_bits_truncate(*v))]
         struct EnableBitmap;
 
-        #[tmv(i16)]
+        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
         struct AuxPowerVoltage;
 
-        #[tmv(i16)]
+        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
         struct InternalTemperature;
 
-        #[tmv(i16)]
+        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
         struct Bat1Voltage;
 
-        #[tmv(i16)]
+        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
         struct Bat1Temperature;
 
-        #[tmv(i16)]
+        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
         struct Bat2Voltage;
 
-        #[tmv(i16)]
+        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
         struct Bat2Temperature;
     }
 
@@ -88,10 +88,11 @@ pub mod telemetry {
         }
 
         mod gps {
+            // this is a temporary solution, no floats will be sent in the final version
             #[tmv([f32; 3])]
             struct Pos;
 
-            #[tmv(u8)]
+            #[tmv(u8, d = |v| crate::parsers::split_byte([2, 2, 4], v))]
             struct Status;
         }
 
@@ -108,13 +109,13 @@ pub mod telemetry {
     }
 
     mod lower_sensor {
-        #[tmv(i16)]
+        #[tmv(i16, pa = crate::parsers::pres_raw_to_pascal)]
         struct Pressure1;
 
-        #[tmv(i16)]
+        #[tmv(i16, pa = crate::parsers::pres_raw_to_pascal)]
         struct Pressure2;
 
-        #[tmv(i16)]
+        #[tmv(i16, c = crate::parsers::temp_raw_to_celcius)]
         struct Temp;
 
         #[tmv(i16)]
