@@ -11,8 +11,8 @@ beacon!(
         Lqi,
         PacketsSent,
         PacketsGood,
-        PacketsBadChecksum,
-        PacketsBadOther
+        PacketsRejectedChecksum,
+        PacketsRejectedOther
     )
 );
 

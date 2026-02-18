@@ -29,10 +29,10 @@ pub mod telemetry {
         struct PacketsGood;
 
         #[tmv(u32)]
-        struct PacketsBadChecksum;
+        struct PacketsRejectedChecksum;
 
         #[tmv(u32)]
-        struct PacketsBadOther;
+        struct PacketsRejectedOther;
     }
 
     mod eps {
