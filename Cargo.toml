@@ -13,7 +13,7 @@ embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
 ground = ["tmtc-system/ground", "dep:serde" ]
 
 [dependencies]
-tmtc-system = { version = "4.4.2", git = "ssh://git@github.com/S2outh/telemetry-system.git" }
+tmtc-system = { version = "4.5.0", git = "ssh://git@github.com/S2outh/telemetry-system.git" }
 #tmtc-system = { version = "1.0.0", path = "/home/eliseoc/WueSpace/South/tmtc-system" }
 
 # air
