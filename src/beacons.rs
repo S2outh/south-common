@@ -40,8 +40,7 @@ beacon!(
     telemetry(
         imu1::AccelLowRange,
         imu1::AccelFullRange,
-        imu1::Gyro,
-        imu1::Temp
+        imu1::Gyro
     )
 );
 
@@ -55,6 +54,7 @@ beacon!(
         gps::Status,
         baro::Pressure,
         baro::Temp,
+        imu1::Temp,
         InternalTemperature
     )
 );

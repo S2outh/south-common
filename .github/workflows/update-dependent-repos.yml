@@ -1,0 +1,125 @@
+name: Update dependent repos
+
+on:
+  workflow_dispatch:
+
+jobs:
+  update-dependent-repos:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout list from dev
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Configure git auth for private deps (force PAT over SSH)
+        shell: bash
+        run: |
+          mkdir -p "$HOME"
+
+          cat > "$HOME/.gitconfig" <<EOF
+          [url "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/"]
+            insteadOf = https://github.com/
+            insteadOf = ssh://git@github.com/
+            insteadOf = ssh://git@github.com:
+            insteadOf = git@github.com:
+          EOF
+
+          git config --global --list | sed -n 's/^url\./url./p'
+
+      - name: Update dependent repositories
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          LIST_PATH: .github/dependent-repos.txt
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "GH_TOKEN secret is required." >&2
+            exit 1
+          fi
+          if [ ! -f "$LIST_PATH" ]; then
+            echo "Repo list not found at $LIST_PATH." >&2
+            exit 1
+          fi
+
+          mapfile -t repos < <(grep -v '^\s*#' "$LIST_PATH" | sed '/^\s*$/d')
+          if [ "${#repos[@]}" -eq 0 ]; then
+            echo "Repo list is empty; nothing to update."
+            exit 0
+          fi
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          default_branch="dev"
+          default_path="."
+          for entry in "${repos[@]}"; do
+            entry="$(echo "$entry" | xargs)"
+            [ -z "$entry" ] && continue
+            read -r -a parts <<< "$entry"
+            repo="${parts[0]}"
+            branch="$default_branch"
+            cargo_path="$default_path"
+            branch_set=""
+            for part in "${parts[@]:1}"; do
+              case "$part" in
+                branch=*)
+                  branch="${part#branch=}"
+                  branch_set="1"
+                  ;;
+                path=*)
+                  cargo_path="${part#path=}"
+                  ;;
+                *)
+                  if [ -z "$branch_set" ] && [ "$branch" = "$default_branch" ]; then
+                    branch="$part"
+                    branch_set="1"
+                  elif [ "$cargo_path" = "$default_path" ]; then
+                    cargo_path="$part"
+                  else
+                    echo "Unexpected entry token '$part' for $repo." >&2
+                    exit 1
+                  fi
+                  ;;
+              esac
+            done
+            if [ -z "$branch" ]; then
+              echo "Branch is required for $repo." >&2
+              exit 1
+            fi
+            if [ -z "$cargo_path" ]; then
+              echo "Cargo path is required for $repo." >&2
+              exit 1
+            fi
+            if [[ "$cargo_path" = /* ]]; then
+              echo "Cargo path must be relative for $repo (got $cargo_path)." >&2
+              exit 1
+            fi
+            echo "Updating $repo on $branch (path: $cargo_path)"
+            workdir="$(mktemp -d)"
+            git clone --branch "$branch" --single-branch "https://x-access-token:${GH_TOKEN}@github.com/${repo}.git" "$workdir"
+            pushd "$workdir" >/dev/null
+            if [ ! -d "$cargo_path" ]; then
+              echo "Cargo path $cargo_path not found for $repo." >&2
+              exit 1
+            fi
+            if [ ! -f "$cargo_path/Cargo.toml" ]; then
+              echo "Cargo.toml not found at $cargo_path for $repo." >&2
+              exit 1
+            fi
+            pushd "$cargo_path" >/dev/null
+            cargo update
+            popd >/dev/null
+            if git status --porcelain | grep -q .; then
+              git add -A
+              git commit -m "chore: cargo update"
+              git push origin "$branch"
+            else
+              echo "No changes for $repo"
+            fi
+            popd >/dev/null
+            rm -rf "$workdir"
+          done
