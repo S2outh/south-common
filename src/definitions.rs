@@ -94,7 +94,7 @@ pub mod telemetry {
             #[tmv([i32; 3])]
             struct Vel;
 
-            #[tmv(u8, d = |v| crate::parsers::split_byte([2, 2, 4], v))]
+            #[tmv(u8, d = |v| crate::parsers::split_byte([2, 6], v))]
             struct Status;
         }
 
