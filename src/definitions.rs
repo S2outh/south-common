@@ -88,7 +88,7 @@ pub mod telemetry {
         }
 
         mod gps {
-            #[tmv([i32; 3])]
+            #[tmv([i32; 3], llh = crate::parsers::ecef_cm_to_llh)]
             struct ECEF;
 
             #[tmv([i32; 3])]

@@ -10,7 +10,7 @@ g0 = [ "embedded", "embassy-stm32/stm32g0b1ke" ]
 h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 
 embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
-ground = ["tmtc-system/ground", "dep:serde" ]
+ground = ["tmtc-system/ground", "dep:serde", "dep:libm" ]
 
 [dependencies]
 tmtc-system = { version = "4.5.0", git = "https://github.com/S2outh/telemetry-system.git" }
@@ -22,6 +22,6 @@ heapless = { version = "0.9", default-features = false, optional = true }
 embedded-can = { version = "0.4.1", optional = true }
 
 # ground
+libm = { version = "0.2.16", optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.11.0", features = ["serde"] }
-libm = { version = "0.2.16" }

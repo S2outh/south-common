@@ -12,6 +12,50 @@ pub fn split_byte<const N: usize>(lengths: [u8; N], v: &u8) -> [u8; N] {
     vals
 }
 
+pub fn ecef_cm_to_llh(ecef_cm: &[i32; 3]) -> [f64; 3] {
+    // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
+    const A: f64 = 6_378_137.0;
+    const F: f64 = 1.0 / 298.257_223_563;
+    const E2: f64 = F * (2.0 - F);
+    const B: f64 = A * (1.0 - F);
+    const RAD2DEG: f64 = 180.0 / core::f64::consts::PI;
+
+    let x = ecef_cm[0] as f64 * 0.01;
+    let y = ecef_cm[1] as f64 * 0.01;
+    let z = ecef_cm[2] as f64 * 0.01;
+
+    let lon = libm::atan2(y, x);
+    let p = libm::sqrt(x * x + y * y);
+
+    if p < 1e-9 {
+        let lat = if z >= 0.0 {
+            core::f64::consts::FRAC_PI_2
+        } else {
+            -core::f64::consts::FRAC_PI_2
+        };
+        let h = libm::fabs(z) - B;
+        return [lat * RAD2DEG, lon * RAD2DEG, h];
+    }
+
+    let mut lat = libm::atan2(z, p * (1.0 - E2));
+    let mut h = 0.0;
+
+    for _ in 0..10 {
+        let sin_lat = libm::sin(lat);
+        let n = A / libm::sqrt(1.0 - E2 * sin_lat * sin_lat);
+        let cos_lat = libm::cos(lat);
+        h = p / cos_lat - n;
+        let lat_next = libm::atan2(z, p * (1.0 - E2 * n / (n + h)));
+        if libm::fabs(lat_next - lat) < 1e-13 {
+            lat = lat_next;
+            break;
+        }
+        lat = lat_next;
+    }
+
+    [lat * RAD2DEG, lon * RAD2DEG, h]
+}
+
 // This is redefined from other repos, and a temporary solution
 const TEMP_A: f64 = 3.9083e-3;
 const TEMP_B: f64 = -5.775e-7;
