@@ -50,7 +50,8 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 3,
     telemetry(
-        gps::Pos,
+        gps::ECEF,
+        gps::Vel,
         gps::Status,
         baro::Pressure,
         baro::Temp,

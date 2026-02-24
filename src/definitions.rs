@@ -88,9 +88,11 @@ pub mod telemetry {
         }
 
         mod gps {
-            // this is a temporary solution, no floats will be sent in the final version
-            #[tmv([f32; 3])]
-            struct Pos;
+            #[tmv([i32; 3])]
+            struct ECEF;
+
+            #[tmv([i32; 3])]
+            struct Vel;
 
             #[tmv(u8, d = |v| crate::parsers::split_byte([2, 2, 4], v))]
             struct Status;
