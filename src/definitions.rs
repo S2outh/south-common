@@ -62,11 +62,27 @@ pub mod telemetry {
     }
 
     mod upper_sensor {
-        #[tmv(crate::types::upper_sensor::ImuRaw)]
-        struct Imu1;
+        mod imu1 {
+            #[tmv([i16; 3])]
+            struct AccelFullRange;
 
-        #[tmv(crate::types::upper_sensor::ImuRaw)]
-        struct Imu2;
+            #[tmv([i16; 3])]
+            struct AccelLowRange;
+
+            #[tmv([i16; 3])]
+            struct Gyro;
+        }
+
+        mod imu2 {
+            #[tmv([i16; 3])]
+            struct AccelFullRange;
+
+            #[tmv([i16; 3])]
+            struct AccelLowRange;
+
+            #[tmv([i16; 3])]
+            struct Gyro;
+        }
 
         mod gps {
             #[tmv([i32; 3], llh = crate::parsing::upper_sensor::ecef_cm_to_llh)]

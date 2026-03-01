@@ -39,7 +39,9 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 2,
     telemetry(
-        Imu1
+        imu1::AccelFullRange,
+        imu1::AccelLowRange,
+        imu1::Gyro
     )
 );
 

@@ -2,10 +2,9 @@ use tmtc_system::*;
 
 #[derive(TMValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-pub struct ImuRaw {
+pub struct AccelRaw {
     pub accel_full_range: [i16; 3],
     pub accel_low_range: [i16; 3],
-    pub gyro: [i16; 3],
 }
 
 
