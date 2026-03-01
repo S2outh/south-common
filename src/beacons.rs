@@ -22,7 +22,8 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 1,
     telemetry(
-        EnableBitmap,
+        SourceEnabled,
+        SinkEnabled,
         AuxPowerVoltage,
         InternalTemperature,
         Bat1Voltage,

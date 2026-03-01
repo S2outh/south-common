@@ -38,21 +38,36 @@ pub enum FlipFlopState {
 #[derive(TMValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum Sink {
+    Carrier,
     RocketLST,
-    SensorUpper,
     GPS,
+    ExternalCamera,
+    SensorLower,
     RocketHD,
+    BackupSink
 }
 
 // # Telemetry types
 bitflags! {
     #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-    pub struct EPSEnabled: u8 {
-        const BAT1      = 1 << 0;
-        const BAT2      = 1 << 1;
-        const AUXPWR    = 1 << 2;
-        const ROCKETLST = 1 << 3;
-        const SENSORUPP = 1 << 4;
-        const ROCKETHD  = 1 << 5;
+    #[cfg_attr(feature = "ground", serde(transparent))]
+    pub struct SinkEnabled: u8 {
+        const CARRIER    = 1 << 0;
+        const ROCKETLST  = 1 << 1;
+        const GPS        = 1 << 2;
+        const EXT_CAM    = 1 << 3;
+        const LOWER_SENS = 1 << 4;
+        const ROCKETHD   = 1 << 5;
+        const BACKUP     = 1 << 6;
+    }
+}
+
+bitflags! {
+    #[cfg_attr(feature = "ground", derive(serde::Serialize))]
+    #[cfg_attr(feature = "ground", serde(transparent))]
+    pub struct SourceEnabled: u8 {
+        const BAT_1    = 1 << 0;
+        const BAT_2    = 1 << 1;
+        const AUX_PWR  = 1 << 2;
     }
 }

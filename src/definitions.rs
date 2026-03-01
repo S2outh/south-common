@@ -36,8 +36,11 @@ pub mod telemetry {
     }
 
     mod eps {
-        #[tmv(u8, enabled = |v: &u8| crate::types::EPSEnabled::from_bits_truncate(*v))]
-        struct EnableBitmap;
+        #[tmv(u8, flags = |v: &u8| crate::types::SourceEnabled::from_bits_truncate(*v))]
+        struct SourceEnabled;
+
+        #[tmv(u8, flags = |v: &u8| crate::types::SinkEnabled::from_bits_truncate(*v))]
+        struct SinkEnabled;
 
         #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
         struct AuxPowerVoltage;
@@ -94,7 +97,7 @@ pub mod telemetry {
             #[tmv([i32; 3])]
             struct Vel;
 
-            #[tmv(u8, d = |v| crate::parsers::split_byte([2, 6], v))]
+            #[tmv(u8, sv = |v| crate::parsers::mask(2, 6, v), nav = |v| crate::parsers::mask(0, 2, v))]
             struct Status;
         }
 

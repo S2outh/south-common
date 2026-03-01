@@ -12,6 +12,10 @@ pub fn split_byte<const N: usize>(lengths: [u8; N], v: &u8) -> [u8; N] {
     vals
 }
 
+pub fn mask(shift: u8, length: u8, v: &u8) -> u8 {
+    (*v >> shift) & ((1u8 << length) - 1)
+}
+
 pub fn ecef_cm_to_llh(ecef_cm: &[i32; 3]) -> [f64; 3] {
     // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
     const A: f64 = 6_378_137.0;

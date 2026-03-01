@@ -13,7 +13,7 @@ embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
 ground = ["tmtc-system/ground", "dep:serde", "dep:libm" ]
 
 [dependencies]
-tmtc-system = { version = "4.5.0", git = "https://github.com/S2outh/telemetry-system.git" }
+tmtc-system = { version = "4.6.0", git = "https://github.com/S2outh/telemetry-system.git" }
 
 # air
 embassy-stm32 = { version = "0.5.0", features = [ "defmt" ], optional = true }
