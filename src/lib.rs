@@ -9,7 +9,7 @@ pub mod beacons;
 pub mod definitions;
 
 #[cfg(feature = "ground")]
-mod parsers;
+mod parsing;
 
 #[cfg(feature = "embedded")]
 pub mod can_config;

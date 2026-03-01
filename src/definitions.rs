@@ -36,94 +36,65 @@ pub mod telemetry {
     }
 
     mod eps {
-        #[tmv(u8, flags = |v: &u8| crate::types::SourceEnabled::from_bits_truncate(*v))]
+        #[tmv(u8, flags = |v: &u8| crate::types::eps::SourceEnabled::from_bits_truncate(*v))]
         struct SourceEnabled;
 
-        #[tmv(u8, flags = |v: &u8| crate::types::SinkEnabled::from_bits_truncate(*v))]
+        #[tmv(u8, flags = |v: &u8| crate::types::eps::SinkEnabled::from_bits_truncate(*v))]
         struct SinkEnabled;
 
-        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
+        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
         struct AuxPowerVoltage;
 
-        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
+        #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct InternalTemperature;
 
-        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
+        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
         struct Bat1Voltage;
 
-        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
+        #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct Bat1Temperature;
 
-        #[tmv(i16, v = |v| crate::parsers::fixed_dec(100., v))]
+        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
         struct Bat2Voltage;
 
-        #[tmv(i16, c = |v| crate::parsers::fixed_dec(10., v))]
+        #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct Bat2Temperature;
     }
 
     mod upper_sensor {
-        mod imu1 {
-            #[tmv([i16; 3])]
-            struct AccelLowRange;
+        #[tmv(crate::types::upper_sensor::ImuRaw)]
+        struct Imu1;
 
-            #[tmv([i16; 3])]
-            struct AccelFullRange;
-
-            #[tmv([i16; 3])]
-            struct Gyro;
-
-            #[tmv(i16)]
-            struct Temp;
-        }
-
-        mod imu2 {
-            #[tmv([i16; 3])]
-            struct AccelLowRange;
-
-            #[tmv([i16; 3])]
-            struct AccelFullRange;
-
-            #[tmv([i16; 3])]
-            struct Gyro;
-
-            #[tmv(i16)]
-            struct Temp;
-        }
+        #[tmv(crate::types::upper_sensor::ImuRaw)]
+        struct Imu2;
 
         mod gps {
-            #[tmv([i32; 3], llh = crate::parsers::ecef_cm_to_llh)]
+            #[tmv([i32; 3], llh = crate::parsing::upper_sensor::ecef_cm_to_llh)]
             struct ECEF;
 
             #[tmv([i32; 3])]
             struct Vel;
 
-            #[tmv(u8, sv = |v| crate::parsers::mask(2, 6, v), nav = |v| crate::parsers::mask(0, 2, v))]
+            #[tmv(u8, sv = |v| crate::parsing::mask(2, 6, v), nav = |v| crate::parsing::mask(0, 2, v))]
             struct Status;
         }
 
-        mod baro {
-            #[tmv(i16)]
-            struct Pressure;
-
-            #[tmv(i16)]
-            struct Temp;
-        }
+        #[tmv(crate::types::upper_sensor::BaroRaw,
+            c = crate::parsing::upper_sensor::baro_temp_convert,
+            p = crate::parsing::upper_sensor::baro_pressure_convert_pa
+        )]
+        struct Baro;
 
         #[tmv(i16)]
         struct InternalTemperature;
     }
 
     mod lower_sensor {
-        #[tmv(i16, pa = crate::parsers::pres_raw_to_pascal)]
-        struct Pressure1;
-
-        #[tmv(i16, pa = crate::parsers::pres_raw_to_pascal)]
-        struct Pressure2;
-
-        #[tmv(i16, c = crate::parsers::temp_raw_to_celcius)]
-        struct Temp;
-
-        #[tmv(i16)]
-        struct AdcTemp;
+        #[tmv(crate::types::lower_sensor::LowerSensorAdcValues,
+            p_ch1 = crate::parsing::lower_sensor::pascal_ch1,
+            p_ch2 = crate::parsing::lower_sensor::pascal_ch1,
+            c = crate::parsing::lower_sensor::celcius
+        )]
+        struct Adc;
     }
 }
