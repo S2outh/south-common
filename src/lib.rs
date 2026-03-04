@@ -8,12 +8,12 @@ extern crate alloc;
 pub mod beacons;
 pub mod definitions;
 
+pub mod configs;
+pub mod types;
+
+// Ground parsing
 #[cfg(feature = "ground")]
 mod parsing;
-
-#[cfg(feature = "embedded")]
-pub mod can_config;
-pub mod types;
 
 // public reexports
 pub use tmtc_system;

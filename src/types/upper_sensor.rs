@@ -1,17 +1,18 @@
 use tmtc_system::*;
+use crate::types::Vector3i16;
 
 #[derive(TMValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct AccelRaw {
-    pub accel_full_range: [i16; 3],
-    pub accel_low_range: [i16; 3],
+    pub accel_full_range: Vector3i16,
+    pub accel_low_range: Vector3i16,
 }
-
 
 #[derive(TMValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-pub struct BaroRaw {
-    pub status: u8,            // 2 bit
-    pub pressure_data: u16,    //14 bit
-    pub temperature_data: u16, //14 bit
+pub struct LLH {
+    pub lat: f32,
+    pub lon: f32,
+    pub h: f32,
 }
+

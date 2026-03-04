@@ -5,17 +5,17 @@
 
 use crate::types::lower_sensor::LowerSensorAdcValues;
 
-const TEMP_A: f64 = 3.9083e-3;
-const TEMP_B: f64 = -5.775e-7;
-const R_0: f64 = 1000.0;
+const TEMP_A: f32 = 3.9083e-3;
+const TEMP_B: f32 = -5.775e-7;
+const R_0: f32 = 1000.0;
 
 // max 
 
 pub fn celcius(raw: &LowerSensorAdcValues) -> f32 {
-    const FSR: f64 = 2.048;
+    const FSR: f32 = 2.048;
 
     // convert raw adc value to voltage
-    let u =  (raw.temp_ch as f64 * FSR) / 32768.0;
+    let u =  (raw.temp_ch as f32 * FSR) / 32768.0;
 
     // convert voltage to resistance with constant current source I = 1mA
     let r = u * 1000.0;
@@ -27,7 +27,7 @@ pub fn celcius(raw: &LowerSensorAdcValues) -> f32 {
         return f32::NAN;
     }
 
-    let sqrt_d = libm::sqrt(d);
+    let sqrt_d = libm::sqrtf(d);
     let temperature = (-TEMP_A + sqrt_d) / (2.0 * TEMP_B);
     temperature as f32
 }

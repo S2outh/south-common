@@ -39,8 +39,7 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 2,
     telemetry(
-        imu1::AccelFullRange,
-        imu1::AccelLowRange,
+        imu1::Accel,
         imu1::Gyro
     )
 );
@@ -51,7 +50,7 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 3,
     telemetry(
-        gps::ECEF,
+        gps::Pos,
         gps::Vel,
         gps::Status,
         Baro,

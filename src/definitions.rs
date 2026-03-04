@@ -1,12 +1,18 @@
 use tmtc_system::*;
 
 #[telemetry_definition(id = 0)]
-mod telecommands {
+mod internal_msgs {
     #[tmv(crate::types::Telecommand)]
     struct Telecommand;
+
+    #[tmv(crate::types::Timesync)]
+    struct TimesyncRequest;
+
+    #[tmv(crate::types::Timesync)]
+    struct TimesyncAnswer;
 }
 
-#[telemetry_definition(id = 1)]
+#[telemetry_definition(id = 10)]
 pub mod telemetry {
 
     #[tmv(u64)]
@@ -63,42 +69,41 @@ pub mod telemetry {
 
     mod upper_sensor {
         mod imu1 {
-            #[tmv([i16; 3])]
-            struct AccelFullRange;
+            #[tmv(crate::types::upper_sensor::AccelRaw,
+                mps = crate::parsing::upper_sensor::accel_f32
+            )]
+            struct Accel;
 
-            #[tmv([i16; 3])]
-            struct AccelLowRange;
-
-            #[tmv([i16; 3])]
+            #[tmv(crate::types::Vector3i16,
+                rps = crate::parsing::upper_sensor::gyro_f32
+            )]
             struct Gyro;
         }
 
         mod imu2 {
-            #[tmv([i16; 3])]
-            struct AccelFullRange;
+            #[tmv(crate::types::upper_sensor::AccelRaw,
+                mps = crate::parsing::upper_sensor::accel_f32
+            )]
+            struct Accel;
 
-            #[tmv([i16; 3])]
-            struct AccelLowRange;
-
-            #[tmv([i16; 3])]
+            #[tmv(crate::types::Vector3i16,
+                rps = crate::parsing::upper_sensor::gyro_f32
+            )]
             struct Gyro;
         }
 
         mod gps {
-            #[tmv([i32; 3], llh = crate::parsing::upper_sensor::ecef_cm_to_llh)]
-            struct ECEF;
+            #[tmv(crate::types::Vector3i32, llh = crate::parsing::upper_sensor::ecef_cm_to_llh)]
+            struct Pos;
 
-            #[tmv([i32; 3])]
+            #[tmv(crate::types::Vector3i32)]
             struct Vel;
 
             #[tmv(u8, sv = |v| crate::parsing::mask(2, 6, v), nav = |v| crate::parsing::mask(0, 2, v))]
             struct Status;
         }
 
-        #[tmv(crate::types::upper_sensor::BaroRaw,
-            c = crate::parsing::upper_sensor::baro_temp_convert,
-            p = crate::parsing::upper_sensor::baro_pressure_convert_pa
-        )]
+        #[tmv(u16, pa = crate::parsing::upper_sensor::baro_pressure_convert_pa)]
         struct Baro;
 
         #[tmv(i16)]
@@ -107,9 +112,9 @@ pub mod telemetry {
 
     mod lower_sensor {
         #[tmv(crate::types::lower_sensor::LowerSensorAdcValues,
-            p_ch1 = crate::parsing::lower_sensor::pascal_ch1,
-            p_ch2 = crate::parsing::lower_sensor::pascal_ch1,
-            c = crate::parsing::lower_sensor::celcius
+            pres_ch1_pa = crate::parsing::lower_sensor::pascal_ch1,
+            pres_ch2_pa = crate::parsing::lower_sensor::pascal_ch2,
+            temp_c = crate::parsing::lower_sensor::celcius
         )]
         struct Adc;
     }
