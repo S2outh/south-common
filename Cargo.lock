@@ -754,8 +754,8 @@ dependencies = [
 
 [[package]]
 name = "tmtc-system"
-version = "4.6.0"
-source = "git+https://github.com/S2outh/telemetry-system.git#85159058f22cf3f2d867ab095fc2e41c8ae86594"
+version = "4.6.1"
+source = "git+https://github.com/S2outh/telemetry-system.git#5fa36803b5ff3897239bb244e09fc06613f8b6d8"
 dependencies = [
  "serde",
  "tmtc-system-macros",
@@ -764,7 +764,7 @@ dependencies = [
 [[package]]
 name = "tmtc-system-macros"
 version = "0.1.0"
-source = "git+https://github.com/S2outh/telemetry-system.git#85159058f22cf3f2d867ab095fc2e41c8ae86594"
+source = "git+https://github.com/S2outh/telemetry-system.git#5fa36803b5ff3897239bb244e09fc06613f8b6d8"
 dependencies = [
  "heck",
  "proc-macro2",
