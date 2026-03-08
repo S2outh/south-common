@@ -48,23 +48,26 @@ pub mod telemetry {
         #[tmv(u8, flags = |v: &u8| crate::types::eps::SinkEnabled::from_bits_truncate(*v))]
         struct SinkEnabled;
 
-        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[tmv(i16, v = crate::parsing::eps::bus_voltage_convert)]
         struct AuxPowerVoltage;
 
         #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct InternalTemperature;
 
-        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[tmv(i16, v = crate::parsing::eps::bus_voltage_convert)]
         struct Bat1Voltage;
 
         #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct Bat1Temperature;
 
-        #[tmv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[tmv(i16, v = crate::parsing::eps::bus_voltage_convert)]
         struct Bat2Voltage;
 
         #[tmv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct Bat2Temperature;
+
+        #[tmv(i16, current = crate::parsing::eps::shunt_current_convert)]
+        struct ShuntVoltage;
     }
 
     mod upper_sensor {

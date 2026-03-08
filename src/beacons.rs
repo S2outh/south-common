@@ -25,11 +25,11 @@ beacon!(
         SourceEnabled,
         SinkEnabled,
         AuxPowerVoltage,
-        InternalTemperature,
         Bat1Voltage,
         Bat1Temperature,
         Bat2Voltage,
-        Bat2Temperature
+        Bat2Temperature,
+        ShuntVoltage
     )
 );
 
