@@ -509,9 +509,12 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 [[package]]
 name = "lsm6dsv32"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/imu-driver.git#4780d5bfdc17e4ecfb84750feb850d052c1aedd1"
+source = "git+ssh://git@github.com/S2outh/imu-driver.git?rev=27407899833690f06886dc5072b11cfcfcbc404e#27407899833690f06886dc5072b11cfcfcbc404e"
 dependencies = [
  "defmt 1.0.1",
+ "embassy-stm32",
+ "embassy-sync",
+ "embassy-time",
 ]
 
 [[package]]

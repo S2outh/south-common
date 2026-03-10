@@ -5,7 +5,7 @@ mod internal_msgs {
     #[tmv(crate::types::Telecommand)]
     struct Telecommand;
 
-    #[tmv(crate::types::Timesync)]
+    #[tmv(u8)]
     struct TimesyncRequest;
 
     #[tmv(crate::types::Timesync)]

@@ -10,7 +10,8 @@ use crate::types::eps::EPSCommand;
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct Timesync {
     request_id: u8,
-    timestamp: u64,
+    priority: u8,
+    unix_time: u64,
 }
 
 // # Telecommands
