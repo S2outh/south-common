@@ -4,15 +4,15 @@ use tmtc_system::*;
 #[derive(TMValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum EPSCommand {
-    SetSource(FlipFlopState, Option<u8>),
+    EnableSource(FlipFlopInput, Option<u8>),
+    DisableSource(FlipFlopInput, Option<u8>),
     EnableSink(Sink, Option<u8>),
     DisableSink(Sink, Option<u8>),
 }
 
 #[derive(TMValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-pub enum FlipFlopState {
-    On,
+pub enum FlipFlopInput {
     Bat1,
     Bat2,
     AuxPwr,
