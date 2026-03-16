@@ -13,7 +13,7 @@ embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
 ground = ["tmtc-system/ground", "dep:serde", "dep:libm" ]
 
 [dependencies]
-tmtc-system = { version = "4.7.0", git = "https://github.com/S2outh/telemetry-system.git" }
+tmtc-system = { version = "4.8.3", git = "https://github.com/S2outh/telemetry-system.git" }
 
 # config
 lsm6dsv32 = { git = "ssh://git@github.com/S2outh/imu-driver.git", default-features = false }
@@ -29,3 +29,7 @@ embedded-can = { version = "0.4.1", optional = true }
 libm = { version = "0.2.16", optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.11.0", features = ["serde"] }
+
+[build-dependencies]
+serde_json = "1.0.149"
+serde = { version = "1.0.228", features = ["derive"] }

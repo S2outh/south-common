@@ -495,6 +495,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
+name = "itoa"
+version = "1.0.17"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "92ecc6618181def0457392ccd0ee51198e065e016d1d527a7ac1b6dc7c1f09d2"
+
+[[package]]
 name = "libm"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -510,6 +516,12 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 name = "lsm6dsv32"
 version = "0.1.0"
 source = "git+ssh://git@github.com/S2outh/imu-driver.git#22648ce994a2b9d6e6d720bc57d346b5b3572381"
+
+[[package]]
+name = "memchr"
+version = "2.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 
 [[package]]
 name = "nb"
@@ -660,6 +672,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "serde_json"
+version = "1.0.149"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "83fc039473c5595ace860d8c4fafa220ff474b3fc6bfdb4293327f1a37e94d86"
+dependencies = [
+ "itoa",
+ "memchr",
+ "serde",
+ "serde_core",
+ "zmij",
+]
+
+[[package]]
 name = "south-common"
 version = "3.0.0"
 dependencies = [
@@ -671,6 +696,7 @@ dependencies = [
  "libm",
  "lsm6dsv32",
  "serde",
+ "serde_json",
  "spin",
  "tmtc-system",
 ]
@@ -760,8 +786,8 @@ dependencies = [
 
 [[package]]
 name = "tmtc-system"
-version = "4.7.0"
-source = "git+https://github.com/S2outh/telemetry-system.git#a856cf2c40eec91460fc2928f4e239d0a631d3ac"
+version = "4.8.3"
+source = "git+https://github.com/S2outh/telemetry-system.git#6f0711d8dd4e050b3f9224e333062aad163327fe"
 dependencies = [
  "serde",
  "tmtc-system-macros",
@@ -770,11 +796,13 @@ dependencies = [
 [[package]]
 name = "tmtc-system-macros"
 version = "0.1.0"
-source = "git+https://github.com/S2outh/telemetry-system.git#a856cf2c40eec91460fc2928f4e239d0a631d3ac"
+source = "git+https://github.com/S2outh/telemetry-system.git#6f0711d8dd4e050b3f9224e333062aad163327fe"
 dependencies = [
  "heck",
  "proc-macro2",
  "quote",
+ "serde",
+ "serde_json",
  "syn 2.0.117",
 ]
 
@@ -815,3 +843,9 @@ checksum = "de437e2a6208b014ab52972a27e59b33fa2920d3e00fe05026167a1c509d19cc"
 dependencies = [
  "vcell",
 ]
+
+[[package]]
+name = "zmij"
+version = "1.0.21"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"

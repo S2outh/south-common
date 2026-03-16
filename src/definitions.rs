@@ -15,6 +15,7 @@ mod internal_msgs {
 #[telemetry_definition(id = 10)]
 pub mod telemetry {
 
+    /// This is a utc timestamp in microseconds
     #[tmv(u64)]
     struct Timestamp;
 
