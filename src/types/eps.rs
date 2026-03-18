@@ -1,7 +1,7 @@
 use bitflags::bitflags;
-use tmtc_system::*;
+use chell::*;
 
-#[derive(TMValue)]
+#[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum EPSCommand {
     EnableSource(FlipFlopInput, Option<u8>),
@@ -10,7 +10,7 @@ pub enum EPSCommand {
     DisableSink(Sink, Option<u8>),
 }
 
-#[derive(TMValue, Clone, Copy)]
+#[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum FlipFlopInput {
     Bat1,
@@ -18,7 +18,7 @@ pub enum FlipFlopInput {
     AuxPwr,
 }
 
-#[derive(TMValue, Clone, Copy)]
+#[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum Sink {
     Carrier, // pa5

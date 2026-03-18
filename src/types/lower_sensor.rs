@@ -1,6 +1,6 @@
-use tmtc_system::*;
+use chell::*;
 
-#[derive(TMValue, Clone, Copy)]
+#[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct LowerSensorAdcValues {
     pub pres_1_ch: i16,

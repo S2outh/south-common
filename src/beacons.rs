@@ -1,4 +1,4 @@
-use tmtc_system::*;
+use chell::*;
 
 beacon!(
     LSTBeacon,

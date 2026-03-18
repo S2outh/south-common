@@ -1,7 +1,7 @@
-use tmtc_system::*;
+use chell::*;
 use crate::types::Vector3i16;
 
-#[derive(TMValue, Clone, Copy, Debug)]
+#[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct AccelRaw {
     pub accel_full_range: Vector3i16,
@@ -17,7 +17,7 @@ impl From<([i16; 3], [i16; 3])> for AccelRaw {
     }
 }
 
-#[derive(TMValue, Clone, Copy, Debug)]
+#[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct LLH {
     pub lat: f32,

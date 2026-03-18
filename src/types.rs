@@ -2,11 +2,11 @@ pub mod eps;
 pub mod lower_sensor;
 pub mod upper_sensor;
 
-use tmtc_system::*;
+use chell::*;
 
 use crate::types::eps::EPSCommand;
 
-#[derive(TMValue)]
+#[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct Timesync {
     pub request_id: u8,
@@ -15,21 +15,21 @@ pub struct Timesync {
 }
 
 // # Telecommands
-#[derive(TMValue)]
+#[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum Telecommand {
     RocketLST(LSTCommand),
     EPS(EPSCommand),
 }
 
-#[derive(TMValue)]
+#[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum LSTCommand {
     Reboot,
 }
 
 // # vectors
-#[derive(TMValue, Clone, Copy, Debug)]
+#[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct Vector3i16 {
     pub x: i16,
@@ -43,7 +43,7 @@ impl From<[i16; 3]> for Vector3i16 {
     }
 }
 
-#[derive(TMValue, Clone, Copy, Debug)]
+#[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct Vector3i32 {
     pub x: i32,
@@ -57,7 +57,7 @@ impl From<[i32; 3]> for Vector3i32 {
     }
 }
 
-#[derive(TMValue, Clone, Copy, Debug)]
+#[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct Vector3f32 {
     pub x: f32,
