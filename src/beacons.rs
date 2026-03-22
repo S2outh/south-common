@@ -1,5 +1,6 @@
 use chell::*;
 
+// # Primary Lst
 beacon!(
     LSTBeacon,
     crate::definitions::telemetry::lst,
@@ -66,4 +67,19 @@ beacon!(
     crate::definitions::telemetry::Timestamp,
     id = 4,
     telemetry(Adc)
+);
+
+// # Secondary Lst
+beacon!(
+    SecondaryLstBeacon,
+    crate::definitions::telemetry,
+    crate::definitions::telemetry::Timestamp,
+    id = 0,
+    telemetry(
+        lst::Uptime,
+        lst::PacketsSent,
+        eps::SourceEnabled,
+        eps::SinkEnabled,
+        upper_sensor::gps::Pos
+    )
 );
