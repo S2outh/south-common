@@ -665,7 +665,7 @@ checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
 [[package]]
 name = "rm3100"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/magneto-driver.git#32c7ce30ba2b4c9af06ed3ab2d3de5294809d1cf"
+source = "git+ssh://git@github.com/S2outh/magneto-driver.git#d3a7e28c94ce7b93f88c7954a0afa515ac6a7fde"
 dependencies = [
  "defmt 1.0.1",
 ]
