@@ -537,7 +537,7 @@ checksum = "11d3d7f243d5c5a8b9bb5d6dd2b1602c0cb0b9db1621bafc7ed66e35ff9fe092"
 [[package]]
 name = "lsm6dsv32"
 version = "0.1.0"
-source = "git+ssh://git@github.com/S2outh/imu-driver.git#22648ce994a2b9d6e6d720bc57d346b5b3572381"
+source = "git+ssh://git@github.com/S2outh/imu-driver.git#c7d6a65f1e1db4d82003c167eeb5f0e1e5f60596"
 
 [[package]]
 name = "memchr"
@@ -663,6 +663,14 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a"
 
 [[package]]
+name = "rm3100"
+version = "0.1.0"
+source = "git+ssh://git@github.com/S2outh/magneto-driver.git#32c7ce30ba2b4c9af06ed3ab2d3de5294809d1cf"
+dependencies = [
+ "defmt 1.0.1",
+]
+
+[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -747,6 +755,7 @@ dependencies = [
  "heapless",
  "libm",
  "lsm6dsv32",
+ "rm3100",
  "serde",
  "serde_json",
  "spin",

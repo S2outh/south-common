@@ -116,6 +116,9 @@ pub mod telemetry {
         #[chv(u16, pa = crate::parsing::upper_sensor::baro_pressure_convert_pa)]
         struct Baro;
 
+        #[chv(crate::types::Vector3i32, mt = crate::parsing::upper_sensor::mag_f32)]
+        struct Magneto;
+
         #[chv(i16)]
         struct InternalTemperature;
     }

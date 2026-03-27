@@ -57,6 +57,7 @@ beacon!(
         gps::Vel,
         gps::Status,
         Baro,
+        Magneto,
         InternalTemperature
     )
 );

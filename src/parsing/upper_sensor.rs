@@ -1,13 +1,16 @@
 use lsm6dsv32::config::{FifoDisabled, ImuConfig, Int1Disabled, Int2Disabled};
 use spin::Lazy;
 
-use crate::{configs::imu_config, types::{Vector3f32, Vector3i16, Vector3i32, upper_sensor::{AccelRaw, LLH}}};
+use crate::{configs::{imu_config, mag_config}, types::{Vector3f32, Vector3i16, Vector3i32, upper_sensor::{AccelRaw, LLH}}};
 
 static IMU_CONFIG: Lazy<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> = Lazy::new(imu_config::get_imu_config);
 static GYRO_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.gyro.calc_scaling_factor(true));
 static ACCEL_LOW_RANGE_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor(true));
 static ACCEL_FULL_RANGE_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor_ch2(true));
 static IMU_ACCEL_SCALING_THRESHOLD: Lazy<f32> = Lazy::new(|| libm::powf(2., 2. + (IMU_CONFIG.accel.full_scale as u8 as f32)));
+
+static MAG_CONFIG: Lazy<rm3100::config::Config> = Lazy::new(mag_config::get_mag_config);
+static MAG_SCALING: Lazy<f32> = Lazy::new(|| MAG_CONFIG.calc_scaling_factor());
 
 // Imu
 pub fn gyro_f32(raw: &Vector3i16) -> Vector3f32 {
@@ -38,6 +41,15 @@ pub fn accel_f32(raw: &AccelRaw) -> Vector3f32 {
         x: if calib_full.x < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.x } else { calib_full.x },
         y: if calib_full.y < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.y } else { calib_full.y },
         z: if calib_full.z < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.z } else { calib_full.z },
+    }
+}
+
+// Magneto
+pub fn mag_f32(raw: &Vector3i32) -> Vector3f32 {
+    Vector3f32 {
+        x: raw.x as f32 * *MAG_SCALING,
+        y: raw.y as f32 * *MAG_SCALING,
+        z: raw.z as f32 * *MAG_SCALING,
     }
 }
 

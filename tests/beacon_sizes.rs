@@ -10,7 +10,7 @@ pub fn get_beacon_sizes() {
 
     assert_eq!(LSTBeacon::BYTE_SIZE, 34);
     assert_eq!(EPSBeacon::BYTE_SIZE, 31);
-    assert_eq!(LowRateUpperSensorBeacon::BYTE_SIZE, 41);
+    assert_eq!(LowRateUpperSensorBeacon::BYTE_SIZE, 53);
     assert_eq!(HighRateUpperSensorBeacon::BYTE_SIZE, 30);
     assert_eq!(LowerSensorBeacon::BYTE_SIZE, 20);
 }
