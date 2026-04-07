@@ -70,6 +70,14 @@ beacon!(
     telemetry(Adc)
 );
 
+beacon!(
+    PyroBeacon,
+    crate::definitions::telemetry::pyro,
+    crate::definitions::telemetry::Timestamp,
+    id = 5,
+    telemetry(Status)
+);
+
 // # Secondary Lst
 beacon!(
     SecondaryLstBeacon,

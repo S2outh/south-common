@@ -7,10 +7,12 @@ pub fn get_beacon_sizes() {
     println!("low rate upper beacon: {}", LowRateUpperSensorBeacon::BYTE_SIZE);
     println!("high rate upper beacon: {}", HighRateUpperSensorBeacon::BYTE_SIZE);
     println!("lower sens beacon: {}", LowerSensorBeacon::BYTE_SIZE);
+    println!("pyro beacon: {}", PyroBeacon::BYTE_SIZE);
 
     assert_eq!(LSTBeacon::BYTE_SIZE, 34);
     assert_eq!(EPSBeacon::BYTE_SIZE, 31);
     assert_eq!(LowRateUpperSensorBeacon::BYTE_SIZE, 53);
     assert_eq!(HighRateUpperSensorBeacon::BYTE_SIZE, 30);
     assert_eq!(LowerSensorBeacon::BYTE_SIZE, 20);
+    assert_eq!(PyroBeacon::BYTE_SIZE, 13);
 }

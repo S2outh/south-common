@@ -123,6 +123,11 @@ pub mod telemetry {
         struct InternalTemperature;
     }
 
+    mod pyro {
+        #[chv(u8, flags = |v: &u8| crate::types::pyro::StateFlags::from_bits_truncate(*v))]
+        struct Status;
+    }
+
     mod lower_sensor {
         #[chv(crate::types::lower_sensor::LowerSensorAdcValues,
             pres_ch1_pa = crate::parsing::lower_sensor::pascal_ch1,

@@ -1,10 +1,11 @@
 pub mod eps;
+pub mod pyro;
 pub mod lower_sensor;
 pub mod upper_sensor;
 
 use chell::*;
 
-use crate::types::eps::EPSCommand;
+use crate::types::{eps::EPSCommand, pyro::PyroCommand};
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
@@ -20,6 +21,7 @@ pub struct Timesync {
 pub enum Telecommand {
     RocketLST(LSTCommand),
     EPS(EPSCommand),
+    Pyro(PyroCommand),
 }
 
 #[derive(ChellValue)]
