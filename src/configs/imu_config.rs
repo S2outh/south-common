@@ -15,12 +15,12 @@ pub fn get_imu_config() -> ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled> {
 
     config
         .accel
-        .set_odr(lsm6dsv32::config::AccelODR::Hz960)
+        .set_odr(lsm6dsv32::config::AccelODR::KHz1_92)
         .map_err(|_| "could not set accel odr")
         .unwrap();
     config
         .gyro
-        .set_odr(lsm6dsv32::config::GyroODR::Hz960)
+        .set_odr(lsm6dsv32::config::GyroODR::KHz1_92)
         .map_err(|_| "could not set accel odr")
         .unwrap();
 
