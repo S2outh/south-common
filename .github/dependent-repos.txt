@@ -3,6 +3,7 @@
 S2outh/upper-sensor
 S2outh/eps-software
 S2outh/lower-sensor
+S2outh/pyro
 S2outh/rocketlst-software path=./tmtc-air/
 S2outh/rocketlst-software path=./tmtc-ground/
 S2outh/tmtc-linux-ground branch=main
