@@ -126,6 +126,21 @@ pub mod telemetry {
     mod pyro {
         #[chv(u8, flags = |v: &u8| crate::types::pyro::StateFlags::from_bits_truncate(*v))]
         struct Status;
+
+        #[chv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
+        struct InternalTemperature;
+
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        struct Bat1Voltage;
+
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        struct Bat2Voltage;
+
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        struct Out1Voltage;
+
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        struct Out2Voltage;
     }
 
     mod lower_sensor {

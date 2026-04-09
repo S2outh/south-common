@@ -75,7 +75,13 @@ beacon!(
     crate::definitions::telemetry::pyro,
     crate::definitions::telemetry::Timestamp,
     id = 5,
-    telemetry(Status)
+    telemetry(
+        Status,
+        Bat1Voltage,
+        Bat2Voltage,
+        Out1Voltage,
+        Out2Voltage
+    )
 );
 
 // # Secondary Lst

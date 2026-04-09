@@ -14,5 +14,5 @@ pub fn get_beacon_sizes() {
     assert_eq!(LowRateUpperSensorBeacon::BYTE_SIZE, 53);
     assert_eq!(HighRateUpperSensorBeacon::BYTE_SIZE, 30);
     assert_eq!(LowerSensorBeacon::BYTE_SIZE, 20);
-    assert_eq!(PyroBeacon::BYTE_SIZE, 13);
+    assert_eq!(PyroBeacon::BYTE_SIZE, 21);
 }
