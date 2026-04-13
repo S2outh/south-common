@@ -130,16 +130,16 @@ pub mod telemetry {
         #[chv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct InternalTemperature;
 
-        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(1000., v))]
         struct Bat1Voltage;
 
-        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(1000., v))]
         struct Bat2Voltage;
 
-        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(1000., v))]
         struct Out1Voltage;
 
-        #[chv(i16, v = |v| crate::parsing::fixed_dec(100., v))]
+        #[chv(i16, v = |v| crate::parsing::fixed_dec(1000., v))]
         struct Out2Voltage;
     }
 
