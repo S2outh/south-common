@@ -10,7 +10,7 @@ g0 = [ "embedded", "embassy-stm32/stm32g0b1ke" ]
 h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 
 embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
-ground = ["chell/ground", "dep:serde", "dep:libm" ]
+ground = ["chell/ground", "dep:serde", "dep:erased-serde", "dep:libm" ]
 
 [dependencies]
 chell = { git = "https://github.com/S2outh/chell-sys.git" }
@@ -28,6 +28,7 @@ embedded-can = { version = "0.4.1", optional = true }
 
 # ground
 libm = { version = "0.2.16", optional = true }
+erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.11.0", features = ["serde"] }
 
