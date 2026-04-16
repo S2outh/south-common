@@ -21,13 +21,13 @@ pub enum FlipFlopInput {
 #[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum Sink {
-    Carrier, // pa5
-    Umbilical, // pa3
-    RocketLst1, // pc6
-    RocketLst2, // pa9
+    Carrier,     // pa5
+    Umbilical,   // pa3
+    RocketLst1,  // pc6
+    RocketLst2,  // pa9
     SensorLower, // pa8
-    RocketHD, // pa15
-    BackupSink // pa4
+    RocketHD,    // pa15
+    BackupSink,  // pa4
 }
 
 // # Telemetry types

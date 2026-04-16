@@ -4,8 +4,14 @@ use south_common::beacons::*;
 pub fn get_beacon_sizes() {
     println!("lst beacon: {}", LSTBeacon::BYTE_SIZE);
     println!("eps beacon: {}", EPSBeacon::BYTE_SIZE);
-    println!("low rate upper beacon: {}", LowRateUpperSensorBeacon::BYTE_SIZE);
-    println!("high rate upper beacon: {}", HighRateUpperSensorBeacon::BYTE_SIZE);
+    println!(
+        "low rate upper beacon: {}",
+        LowRateUpperSensorBeacon::BYTE_SIZE
+    );
+    println!(
+        "high rate upper beacon: {}",
+        HighRateUpperSensorBeacon::BYTE_SIZE
+    );
     println!("lower sens beacon: {}", LowerSensorBeacon::BYTE_SIZE);
     println!("pyro beacon: {}", PyroBeacon::BYTE_SIZE);
 

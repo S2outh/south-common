@@ -1,6 +1,6 @@
 pub mod eps;
-pub mod pyro;
 pub mod lower_sensor;
+pub mod pyro;
 pub mod upper_sensor;
 
 use chell::*;
@@ -41,7 +41,11 @@ pub struct Vector3i16 {
 
 impl From<[i16; 3]> for Vector3i16 {
     fn from(value: [i16; 3]) -> Self {
-        Self { x: value[0], y: value[1], z: value[2] }
+        Self {
+            x: value[0],
+            y: value[1],
+            z: value[2],
+        }
     }
 }
 
@@ -55,7 +59,11 @@ pub struct Vector3i32 {
 
 impl From<[i32; 3]> for Vector3i32 {
     fn from(value: [i32; 3]) -> Self {
-        Self { x: value[0], y: value[1], z: value[2] }
+        Self {
+            x: value[0],
+            y: value[1],
+            z: value[2],
+        }
     }
 }
 
@@ -69,6 +77,10 @@ pub struct Vector3f32 {
 
 impl From<[f32; 3]> for Vector3f32 {
     fn from(value: [f32; 3]) -> Self {
-        Self { x: value[0], y: value[1], z: value[2] }
+        Self {
+            x: value[0],
+            y: value[1],
+            z: value[2],
+        }
     }
 }

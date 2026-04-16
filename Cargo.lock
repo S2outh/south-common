@@ -64,9 +64,9 @@ checksum = "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a"
 
 [[package]]
 name = "bitflags"
-version = "2.11.0"
+version = "2.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "843867be96c8daad0d758b57df9392b6d8d271134fce549de6ce169ff98a92af"
+checksum = "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3"
 dependencies = [
  "serde_core",
 ]
@@ -94,17 +94,18 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
 name = "chell"
-version = "5.1.3"
-source = "git+https://github.com/S2outh/chell-sys.git#d9a35309cddf300a094c5e10e0b9b4d03cfbbf13"
+version = "6.0.0"
+source = "git+https://github.com/S2outh/chell-sys.git#486188063d6dd9d16bf5edbbc176ad9b398ab9c4"
 dependencies = [
  "chell-macros",
+ "erased-serde",
  "serde",
 ]
 
 [[package]]
 name = "chell-macros"
-version = "5.1.3"
-source = "git+https://github.com/S2outh/chell-sys.git#d9a35309cddf300a094c5e10e0b9b4d03cfbbf13"
+version = "6.0.0"
+source = "git+https://github.com/S2outh/chell-sys.git#486188063d6dd9d16bf5edbbc176ad9b398ab9c4"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -264,7 +265,7 @@ checksum = "486c0622deb5a519fc4d2cb8e3ef324f7568fcdfff201ff8fcab46557d663ceb"
 dependencies = [
  "aligned",
  "bit_field",
- "bitflags 2.11.0",
+ "bitflags 2.11.1",
  "block-device-driver",
  "cfg-if",
  "cortex-m",
@@ -460,6 +461,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1763775e2323b7d5f0aa6090657f5e21cfa02ede71f5dc40eead06d64dcd15cc"
 dependencies = [
  "embedded-storage",
+]
+
+[[package]]
+name = "erased-serde"
+version = "0.4.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d2add8a07dd6a8d93ff627029c51de145e12686fbc36ecb298ac22e74cf02dec"
+dependencies = [
+ "serde",
+ "serde_core",
+ "typeid",
 ]
 
 [[package]]
@@ -747,7 +759,7 @@ dependencies = [
 name = "south-common"
 version = "4.0.0"
 dependencies = [
- "bitflags 2.11.0",
+ "bitflags 2.11.1",
  "chell",
  "defmt 1.0.1",
  "embassy-stm32",
@@ -854,6 +866,12 @@ dependencies = [
  "quote",
  "syn 1.0.109",
 ]
+
+[[package]]
+name = "typeid"
+version = "1.0.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bc7d623258602320d5c55d1bc22793b57daff0ec7efc270ea7d55ce1d5f5471c"
 
 [[package]]
 name = "unicode-ident"

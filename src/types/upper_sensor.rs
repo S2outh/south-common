@@ -1,5 +1,5 @@
-use chell::*;
 use crate::types::Vector3i16;
+use chell::*;
 
 #[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
@@ -24,4 +24,3 @@ pub struct LLH {
     pub lon: f32,
     pub h: f32,
 }
-

@@ -1,13 +1,23 @@
 use lsm6dsv32::config::{FifoDisabled, ImuConfig, Int1Disabled, Int2Disabled};
 use spin::Lazy;
 
-use crate::{configs::{imu_config, mag_config}, types::{Vector3f32, Vector3i16, Vector3i32, upper_sensor::{AccelRaw, LLH}}};
+use crate::{
+    configs::{imu_config, mag_config},
+    types::{
+        Vector3f32, Vector3i16, Vector3i32,
+        upper_sensor::{AccelRaw, LLH},
+    },
+};
 
-static IMU_CONFIG: Lazy<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> = Lazy::new(imu_config::get_imu_config);
+static IMU_CONFIG: Lazy<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> =
+    Lazy::new(imu_config::get_imu_config);
 static GYRO_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.gyro.calc_scaling_factor(true));
-static ACCEL_LOW_RANGE_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor(true));
-static ACCEL_FULL_RANGE_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor_ch2(true));
-static IMU_ACCEL_SCALING_THRESHOLD: Lazy<f32> = Lazy::new(|| libm::powf(2., 2. + (IMU_CONFIG.accel.full_scale as u8 as f32)));
+static ACCEL_LOW_RANGE_SCALING: Lazy<f32> =
+    Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor(true));
+static ACCEL_FULL_RANGE_SCALING: Lazy<f32> =
+    Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor_ch2(true));
+static IMU_ACCEL_SCALING_THRESHOLD: Lazy<f32> =
+    Lazy::new(|| libm::powf(2., 2. + (IMU_CONFIG.accel.full_scale as u8 as f32)));
 
 static MAG_CONFIG: Lazy<rm3100::config::Config> = Lazy::new(mag_config::get_mag_config);
 static MAG_SCALING: Lazy<f32> = Lazy::new(|| MAG_CONFIG.calc_scaling_factor());
@@ -24,7 +34,7 @@ pub fn gyro_f32(raw: &Vector3i16) -> Vector3f32 {
 pub fn accel_f32(raw: &AccelRaw) -> Vector3f32 {
     let raw_low = raw.accel_low_range;
     let raw_full = raw.accel_full_range;
-    
+
     let calib_low = Vector3f32 {
         x: raw_low.x as f32 * *ACCEL_LOW_RANGE_SCALING,
         y: raw_low.y as f32 * *ACCEL_LOW_RANGE_SCALING,
@@ -38,9 +48,21 @@ pub fn accel_f32(raw: &AccelRaw) -> Vector3f32 {
     };
 
     Vector3f32 {
-        x: if calib_full.x < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.x } else { calib_full.x },
-        y: if calib_full.y < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.y } else { calib_full.y },
-        z: if calib_full.z < *IMU_ACCEL_SCALING_THRESHOLD { calib_low.z } else { calib_full.z },
+        x: if calib_full.x < *IMU_ACCEL_SCALING_THRESHOLD {
+            calib_low.x
+        } else {
+            calib_full.x
+        },
+        y: if calib_full.y < *IMU_ACCEL_SCALING_THRESHOLD {
+            calib_low.y
+        } else {
+            calib_full.y
+        },
+        z: if calib_full.z < *IMU_ACCEL_SCALING_THRESHOLD {
+            calib_low.z
+        } else {
+            calib_full.z
+        },
     }
 }
 
@@ -70,7 +92,6 @@ pub fn baro_pressure_convert_pa(v: &u16) -> f32 {
     (c - OUT_MIN) * PRESSURE_RANGE_PA / (OUT_MAX - OUT_MIN)
 }
 
-
 // GPS
 pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
     // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
@@ -94,7 +115,11 @@ pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
             -core::f32::consts::FRAC_PI_2
         };
         let h = libm::fabsf(z) - B;
-        return LLH { lat: lat * RAD2DEG, lon: lon * RAD2DEG, h};
+        return LLH {
+            lat: lat * RAD2DEG,
+            lon: lon * RAD2DEG,
+            h,
+        };
     }
 
     let mut lat = libm::atan2f(z, p * (1.0 - E2));
@@ -113,5 +138,9 @@ pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
         lat = lat_next;
     }
 
-    LLH { lat: lat * RAD2DEG, lon: lon * RAD2DEG, h}
+    LLH {
+        lat: lat * RAD2DEG,
+        lon: lon * RAD2DEG,
+        h,
+    }
 }

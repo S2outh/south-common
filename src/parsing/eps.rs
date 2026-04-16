@@ -1,4 +1,3 @@
-
 pub fn bus_voltage_convert(v: &i16) -> f32 {
     // 8mV per LSB
     (*v as f32 * 8.) / 1000.

@@ -41,10 +41,7 @@ beacon!(
     crate::definitions::telemetry::upper_sensor,
     crate::definitions::telemetry::Timestamp,
     id = 2,
-    telemetry(
-        imu1::Accel,
-        imu1::Gyro
-    )
+    telemetry(imu1::Accel, imu1::Gyro)
 );
 
 beacon!(
@@ -75,13 +72,7 @@ beacon!(
     crate::definitions::telemetry::pyro,
     crate::definitions::telemetry::Timestamp,
     id = 5,
-    telemetry(
-        Status,
-        Bat1Voltage,
-        Bat2Voltage,
-        Out1Voltage,
-        Out2Voltage
-    )
+    telemetry(Status, Bat1Voltage, Bat2Voltage, Out1Voltage, Out2Voltage)
 );
 
 // # Secondary Lst
@@ -90,9 +81,5 @@ beacon!(
     crate::definitions::telemetry,
     crate::definitions::telemetry::Timestamp,
     id = 0,
-    telemetry(
-        eps::SourceEnabled,
-        eps::SinkEnabled,
-        upper_sensor::gps::Pos
-    )
+    telemetry(eps::SourceEnabled, eps::SinkEnabled, upper_sensor::gps::Pos)
 );

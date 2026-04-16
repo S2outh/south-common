@@ -1,4 +1,3 @@
-
 // recording to IEC 60751 a resistor of a platinum RTD follows the Callendar-Van Dusen equation
 // R(t) = R0 * (1 + At + Bt² + [C(t-100)t³])
 // t>0: C = 0
@@ -9,21 +8,21 @@ const TEMP_A: f32 = 3.9083e-3;
 const TEMP_B: f32 = -5.775e-7;
 const R_0: f32 = 1000.0;
 
-// max 
+// max
 
 pub fn celcius(raw: &LowerSensorAdcValues) -> f32 {
     const FSR: f32 = 2.048;
 
     // convert raw adc value to voltage
-    let u =  (raw.temp_ch as f32 * FSR) / 32768.0;
+    let u = (raw.temp_ch as f32 * FSR) / 32768.0;
 
     // convert voltage to resistance with constant current source I = 1mA
     let r = u * 1000.0;
 
     // solve quadratic formula t = (-A + sqrt(D)) / 2B
-    let d = TEMP_A * TEMP_A - 4.0 * TEMP_B * (1.0 - r/R_0);
+    let d = TEMP_A * TEMP_A - 4.0 * TEMP_B * (1.0 - r / R_0);
 
-    if d<0.0 {
+    if d < 0.0 {
         return f32::NAN;
     }
 
@@ -32,15 +31,14 @@ pub fn celcius(raw: &LowerSensorAdcValues) -> f32 {
     temperature as f32
 }
 
-
 pub fn pascal_ch1(raw: &LowerSensorAdcValues) -> f32 {
     const FSR: f32 = 4.096;
 
     let u_pin = (raw.pres_1_ch as f32 * FSR) / 32768.0;
     let u_sens = u_pin * 3.0;
 
-    let p_bar = u_sens/10.0 * 100.0;
-    p_bar*100_000.0
+    let p_bar = u_sens / 10.0 * 100.0;
+    p_bar * 100_000.0
 }
 
 pub fn pascal_ch2(raw: &LowerSensorAdcValues) -> f32 {
@@ -49,8 +47,8 @@ pub fn pascal_ch2(raw: &LowerSensorAdcValues) -> f32 {
     let u_pin = (raw.pres_2_ch as f32 * FSR) / 32768.0;
     let u_sens = u_pin * 3.0;
 
-    let p_bar = u_sens/10.0 * 100.0;
-    p_bar*100_000.0
+    let p_bar = u_sens / 10.0 * 100.0;
+    p_bar * 100_000.0
 }
 
 /*
