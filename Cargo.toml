@@ -16,8 +16,8 @@ ground = ["chell/ground", "dep:serde", "dep:erased-serde", "dep:libm" ]
 chell = { git = "https://github.com/S2outh/chell-sys.git" }
 
 # config
-lsm6dsv32 = { git = "ssh://git@github.com/S2outh/imu-driver.git", default-features = false }
-rm3100 = { git = "ssh://git@github.com/S2outh/magneto-driver.git", default-features = false }
+lsm6dsv32 = { git = "https://github.com/S2outh/imu-driver.git", default-features = false }
+rm3100 = { git = "https://github.com/S2outh/magneto-driver.git", default-features = false }
 spin = { version = "0.10.0", features = ["lazy", "portable-atomic"], default-features = false }
 
 # air
