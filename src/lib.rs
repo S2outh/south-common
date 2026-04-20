@@ -10,6 +10,7 @@ pub mod definitions;
 
 pub mod configs;
 pub mod types;
+pub mod utils;
 
 // Ground parsing
 #[cfg(feature = "ground")]
