@@ -3,10 +3,17 @@ use chell::*;
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
+pub enum PyroChannel {
+    Channel1,
+    Channel2,
+}
+
+#[derive(ChellValue)]
+#[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum PyroCommand {
-    Arm(u8),
-    Disarm(u8),
-    Fire(u8),
+    Arm(PyroChannel),
+    Disarm(PyroChannel),
+    Fire(PyroChannel),
 }
 
 // # Telemetry types
