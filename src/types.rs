@@ -12,7 +12,8 @@ use crate::types::{eps::EPSCommand, pyro::PyroCommand};
 pub struct Timesync {
     pub request_id: u8,
     pub priority: u8,
-    pub unix_time: u64,
+    pub unix_time_recv: u64,
+    pub unix_time_snd: u64,
 }
 
 // # Telecommands
