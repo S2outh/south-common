@@ -9,7 +9,7 @@ default = [ ]
 g0 = [ "embedded", "embassy-stm32/stm32g0b1ke" ]
 h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 
-embedded = [ "embassy-stm32", "defmt", "heapless", "embedded-can" ]
+embedded = [ "embassy-executor", "embassy-stm32", "embassy-futures", "embassy-time", "embassy-sync", "portable-atomic", "defmt", "heapless", "embedded-can" ]
 ground = ["chell/ground", "dep:serde", "dep:erased-serde", "dep:libm" ]
 
 [dependencies]
@@ -21,9 +21,14 @@ rm3100 = { git = "https://github.com/S2outh/magneto-driver.git", default-feature
 spin = { version = "0.10.0", features = ["lazy", "portable-atomic"], default-features = false }
 
 # air
+embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread", "defmt"], optional = true }
 embassy-stm32 = { version = "0.6.0", features = [ "defmt" ], optional = true }
+embassy-futures = { version = "0.1.2", optional = true }
+embassy-time = { version = "0.5.1", features = [ "defmt" ], optional = true }
+embassy-sync = { version = "0.8.0", features = ["defmt"], optional = true }
 defmt = { version = "1.0", optional = true }
 heapless = { version = "0.9", default-features = false, optional = true }
+portable-atomic = { version = "1.13", optional = true }
 embedded-can = { version = "0.4.1", optional = true }
 
 # ground
