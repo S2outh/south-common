@@ -2,35 +2,40 @@
 #[macro_export]
 macro_rules! south_comms {
     (
-    container => $tm_container:ident,
+    container => $tm_container:ty,
     tm_buffer_size => $tm_buf_size:literal,
     tc_buffer_size => $tc_buf_size:literal,
     device_id => $device_id:literal
     $(, on_telem => $on_telem:expr)?
     ) => {
         mod comms {
-        use defmt::*;
-        use south_common::chell::{match_value, ChellDefinition, ChellValue, DynChellUnion};
+        use super::$tm_container;
+        use defmt::{info, error, Debug2Format};
+        use south_common::chell::{
+            match_value, ChellDefinition, ChellValue, DynChellUnion, fd_compat_chell_union
+        };
         use south_common::{
             definitions::{internal_msgs, telemetry},
             types::{Telecommand, Timesync},
         };
         use embassy_stm32::can::{
-            BufferedFdCanReceiver, BufferedFdCanSender
+            BufferedFdCanReceiver, BufferedFdCanSender, frame::{FdEnvelope, FdFrame}
         };
-        use embassy_time::Instant;
+        use embassy_time::{Instant, Duration, Ticker};
         use embassy_sync::blocking_mutex::raw::ThreadModeRawMutex;
+        use embassy_sync::signal::Signal;
         use embassy_sync::channel::{Channel, Receiver, Sender};
         use embassy_futures::select::{Either3, select3};
+        use portable_atomic::{AtomicU8, AtomicU64, Ordering};
 
         // TM/TC channel types
-        type TMChannel = Channel<ThreadModeRawMutex, $tm_container, $tm_buf_size>;
-        type TMSender = Sender<'static, ThreadModeRawMutex, $tm_container, $tm_buf_size>;
-        type TMReceiver = Receiver<'static, ThreadModeRawMutex, $tm_container, $tm_buf_size>;
+        pub type TMChannel = Channel<ThreadModeRawMutex, $tm_container, $tm_buf_size>;
+        pub type TMSender = Sender<'static, ThreadModeRawMutex, $tm_container, $tm_buf_size>;
+        pub type TMReceiver = Receiver<'static, ThreadModeRawMutex, $tm_container, $tm_buf_size>;
 
-        type TCChannel = Channel<ThreadModeRawMutex, Telecommand, $tc_buf_size>;
-        type TCSender = Sender<'static, ThreadModeRawMutex, Telecommand, $tc_buf_size>;
-        type TCReceiver = Receiver<'static, ThreadModeRawMutex, Telecommand, $tc_buf_size>;
+        pub type TCChannel = Channel<ThreadModeRawMutex, Telecommand, $tc_buf_size>;
+        pub type TCSender = Sender<'static, ThreadModeRawMutex, Telecommand, $tc_buf_size>;
+        pub type TCReceiver = Receiver<'static, ThreadModeRawMutex, Telecommand, $tc_buf_size>;
 
         /// synced can device id
         static CAN_DEVICE_ID: AtomicU8 = AtomicU8::new($device_id);
@@ -51,7 +56,7 @@ macro_rules! south_comms {
                 return;
             }
             TIME_REF.store(time_us - Instant::now().as_micros(), Ordering::Release);
-            TIME_REF_PRIO.store(prio, Oredering::Release);
+            TIME_REF_PRIO.store(prio, Ordering::Release);
         }
 
         fn gen_timesync_frame() -> Option<FdFrame> {
@@ -61,7 +66,6 @@ macro_rules! south_comms {
             )
             .unwrap();
             REQ_TIME.store(Instant::now().as_micros(), Ordering::Release);
-            REQ_ANS_PRIO.store(u8::MAX, Ordering::Release);
             Some(frame)
         }
         
@@ -102,7 +106,7 @@ macro_rules! south_comms {
                     let time_ref = timesync_answer.unix_time_snd + one_way_delay - Instant::now().as_micros();
                     TIME_REF.store(time_ref, Ordering::Relaxed);
                 }
-                Err(e) => defmt::error!("could not read timesync msg {}", Debug2Format(&e)),
+                Err(e) => error!("could not read timesync msg {}", Debug2Format(&e)),
             }
         }
 
@@ -112,8 +116,8 @@ macro_rules! south_comms {
                     match_value!(def, {
                         internal_msgs::TimesyncRequest => {
                             match u8::read(envelope.frame.data()) {
-                                Ok((_, cmd)) => TIMESYNC_REQUEST.signal((*request_id, envelope.ts));
-                                Err(_) => defmt::error!("error parsing ts req"),
+                                Ok((_, request_id)) => TIMESYNC_REQUEST_SIGNAL.signal((request_id, envelope.ts)),
+                                Err(_) => error!("error parsing ts req"),
                             }
                         },
                         internal_msgs::TimesyncAnswer => {
@@ -133,10 +137,10 @@ macro_rules! south_comms {
                     }
                 )?
                 else {
-                    defmt::error!("can id not in any chell def block")
+                    error!("can id not in any chell def block")
                 }
             } else {
-                defmt::error!("non-standart can id")
+                error!("non-standart can id")
             };
         }
 
@@ -148,11 +152,11 @@ macro_rules! south_comms {
                 let opt_frame = match select3(
                     timesync_req_ticker.next(),
                     tm_channel.receive(),
-                    TIMESYNC_REQUEST.wait()
+                    TIMESYNC_REQUEST_SIGNAL.wait()
                 ).await {
                     Either3::First(()) => gen_timesync_frame(),
                     Either3::Second(tm) => gen_tm_frame(tm),
-                    Either3::Third((request_id, local_instant_recv)) => gen_time_ref_answer(request_id, local_recv_instant),
+                    Either3::Third((request_id, local_instant_recv)) => gen_time_ref_answer(request_id, local_instant_recv),
                 };
                 if let Some(frame) = opt_frame {
                     can_sender.write(frame).await;
@@ -166,7 +170,7 @@ macro_rules! south_comms {
                 // receive from can
                 match can.receive().await {
                     Ok(envelope) => handle_can_msg(envelope, tc_channel).await,
-                    Err(e) => defmt::error!("error in can frame! {}", e),
+                    Err(e) => error!("error in can frame! {}", e),
                 };
             }
         }
