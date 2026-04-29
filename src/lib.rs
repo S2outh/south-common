@@ -13,7 +13,7 @@ pub mod types;
 pub mod utils;
 
 #[cfg(feature = "embedded")]
-pub mod common_tasks;
+pub mod comms;
 
 // Ground parsing
 #[cfg(feature = "ground")]
