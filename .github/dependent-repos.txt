@@ -5,6 +5,6 @@ S2outh/eps-software
 S2outh/lower-sensor
 S2outh/pyro
 S2outh/umbilical
-S2outh/rocketlst-software path=./tmtc-air/
-S2outh/rocketlst-software path=./tmtc-ground/
+S2outh/rocketlst-software path=./radio-air/
+S2outh/rocketlst-software path=./radio-ground/
 S2outh/tmtc-linux-ground branch=main

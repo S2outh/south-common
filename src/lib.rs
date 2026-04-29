@@ -2,22 +2,30 @@
 #![feature(const_trait_impl)]
 #![feature(const_cmp)]
 
-#[cfg(feature = "ground")]
-extern crate alloc;
-
-pub mod beacons;
+// TM definitions
 pub mod definitions;
 
-pub mod configs;
+// TM types
 pub mod types;
-pub mod utils;
 
+// Beacon definitions
+pub mod beacons;
+
+// Common device configs
+pub mod configs;
+
+// Common onboard configs
 #[cfg(feature = "embedded")]
-pub mod comms;
+pub mod utils;
+#[cfg(feature = "embedded")]
+pub mod obdh;
 
-// Ground parsing
+// Common ground configs
 #[cfg(feature = "ground")]
 mod parsing;
 
-// public reexports
+#[cfg(feature = "ground")]
+extern crate alloc;
+
+// public chell reexport
 pub use chell;
