@@ -116,7 +116,7 @@ impl<'a, const SIZE: usize> SouthCanSender<'a, SIZE> {
             TimesyncContainer::new(&internal_msgs::TimesyncAnswer, &msg).unwrap();
         Some(FdFrame::new_standard(container.id(), container.fd_bytes()).unwrap())
     }
-    pub async fn run(&self) -> ! {
+    pub async fn run(&mut self) -> ! {
         let mut timesync_req_ticker = Ticker::every(TIMESYNC_REQ_INTERVAL);
         loop {
             let opt_frame = match select3(
@@ -187,7 +187,7 @@ where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
                     },
                 })
             }
-            else if let Some(func) = self.on_tm {
+            else if let Some(func) = self.on_tm.as_ref() {
                 if let Ok(def) = telemetry::from_id(id.as_raw()) {
                     func(def, &envelope).await;
                 }
@@ -200,7 +200,7 @@ where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
         };
     }
 
-    pub async fn run(&self) -> ! {
+    pub async fn run(&mut self) -> ! {
         loop {
             match self.can_receiver.receive().await {
                 Ok(envelope) => self.handle_can_msg(envelope).await,
