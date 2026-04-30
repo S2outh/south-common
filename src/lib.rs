@@ -14,6 +14,10 @@ pub mod beacons;
 // Common device configs
 pub mod configs;
 
+// util macros
+pub mod macros;
+pub use paste;
+
 // Common onboard configs
 #[cfg(feature = "embedded")]
 pub mod utils;

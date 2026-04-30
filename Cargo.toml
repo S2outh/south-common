@@ -36,6 +36,7 @@ libm = { version = "0.2.16", optional = true }
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.11.0", features = ["serde"] }
+paste = "1.0.15"
 
 [build-dependencies]
 serde_json = "1.0.149"
