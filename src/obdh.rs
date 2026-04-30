@@ -135,17 +135,31 @@ impl<'a, const SIZE: usize> SouthCanSender<'a, SIZE> {
     }
 }
 
-pub struct SouthCanReceiver<'a, const SIZE: usize, OnTM = ()>
-where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
+pub struct SouthCanReceiver<'a, const SIZE: usize, OnTM>
+where OnTM: OnTMFunc {
     can_receiver: BufferedFdCanReceiver,
     com_channels: &'a InternalComChannels<SIZE>,
-    on_tm: Option<OnTM>,
+    on_tm_func: OnTM,
+}
+
+pub struct EmptyFunc;
+pub trait OnTMFunc {
+    async fn call(&self, def: &dyn ChellDefinition, envelope: &FdEnvelope);
+    fn should_call(&self) -> bool {
+        true
+    }
+}
+impl OnTMFunc for EmptyFunc {
+    async fn call(&self, _def: &dyn ChellDefinition, _envelope: &FdEnvelope) {}
+    fn should_call(&self) -> bool {
+        false
+    }
 }
 
 impl<'a, const SIZE: usize, OnTM> SouthCanReceiver<'a, SIZE, OnTM>
-where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
-    pub fn new(can_receiver: BufferedFdCanReceiver, com_channels: &'a InternalComChannels<SIZE>, on_tm: Option<OnTM>) -> Self {
-        Self { can_receiver, com_channels, on_tm }
+where OnTM: OnTMFunc {
+    pub fn new(can_receiver: BufferedFdCanReceiver, com_channels: &'a InternalComChannels<SIZE>, on_tm_func: OnTM) -> Self {
+        Self { can_receiver, com_channels, on_tm_func }
     }
 
     fn update_time_ref(&self, envelope: &FdEnvelope) {
@@ -159,8 +173,8 @@ where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
                 self.com_channels.time_ref_prio.store(timesync_answer.priority.saturating_add(1), Ordering::Release);
                 let one_way_delay = (envelope.ts.as_micros() - self.com_channels.req_time.load(Ordering::Acquire))
                                   - (timesync_answer.unix_time_snd - timesync_answer.unix_time_recv);
-                let time_ref = timesync_answer.unix_time_snd + one_way_delay - Instant::now().as_micros();
-                self.com_channels.time_ref.store(time_ref, Ordering::Relaxed);
+                let time_ref = timesync_answer.unix_time_snd + one_way_delay - envelope.ts.as_micros();
+                self.com_channels.time_ref.store(time_ref, Ordering::Release);
             }
             Err(e) => error!("could not read timesync msg {}", Debug2Format(&e)),
         }
@@ -187,12 +201,9 @@ where OnTM: AsyncFn(&dyn ChellDefinition, &FdEnvelope) {
                     },
                 })
             }
-            else if let Some(func) = self.on_tm.as_ref() {
-                if let Ok(def) = telemetry::from_id(id.as_raw()) {
-                    func(def, &envelope).await;
-                }
-            }
-            else {
+            else if self.on_tm_func.should_call() && let Ok(def) = telemetry::from_id(id.as_raw()) {
+                self.on_tm_func.call(def, &envelope).await;
+            } else {
                 error!("can id not in any chell def block")
             }
         } else {
