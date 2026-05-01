@@ -4,7 +4,7 @@ use chell::{
 };
 use crate::{
     definitions::{internal_msgs, telemetry},
-    types::{Telecommand, Timesync},
+    types::{SubsystemCommand, Telecommand, Timesync},
 };
 use embassy_stm32::can::{
     BufferedFdCanReceiver, BufferedFdCanSender, frame::{FdEnvelope, FdFrame}
@@ -26,14 +26,15 @@ const TC_BUFFER_SIZE: usize = 2;
 pub type TMChannel<const SIZE: usize> = Channel<ThreadModeRawMutex, ChellUnion<SIZE>, TM_BUFFER_SIZE>;
 pub type TMSender<'a, const SIZE: usize> = Sender<'a, ThreadModeRawMutex, ChellUnion<SIZE>, TM_BUFFER_SIZE>;
 
-pub type TCChannel = Channel<ThreadModeRawMutex, Telecommand, TC_BUFFER_SIZE>;
-pub type TCReceiver<'a> = Receiver<'a, ThreadModeRawMutex, Telecommand, TC_BUFFER_SIZE>;
+pub type TCChannel<Command: SubsystemCommand> = Channel<ThreadModeRawMutex, Command, TC_BUFFER_SIZE>;
+pub type TCReceiver<'a, Command: SubsystemCommand> = Receiver<'a, ThreadModeRawMutex, Command, TC_BUFFER_SIZE>;
 
 pub type TimesyncSignal = Signal<ThreadModeRawMutex, (u8, Instant)>;
 
-pub struct InternalComChannels<const SIZE: usize> {
+pub struct InternalComChannels<Command, const SIZE: usize>
+where Command: SubsystemCommand {
     tm_channel: TMChannel<SIZE>,
-    tc_channel: TCChannel,
+    tc_channel: TCChannel<Command>,
     timesync_req_signal: TimesyncSignal,
 
     // synced can device id
@@ -44,7 +45,8 @@ pub struct InternalComChannels<const SIZE: usize> {
     time_ref: AtomicU64,
     time_ref_prio: AtomicU8,
 }
-impl<const SIZE: usize> InternalComChannels<SIZE> {
+impl<Command, const SIZE: usize> InternalComChannels<Command, SIZE>
+where Command: SubsystemCommand {
     pub const fn new(can_device_id: u8) -> Self {
         Self {
             tm_channel: TMChannel::<SIZE>::new(),
@@ -70,18 +72,20 @@ impl<const SIZE: usize> InternalComChannels<SIZE> {
     pub fn get_tm_sender(&self) -> TMSender<SIZE> {
         self.tm_channel.sender()
     }
-    pub fn get_tc_receiver(&self) -> TCReceiver {
+    pub fn get_tc_receiver(&self) -> TCReceiver<Command> {
         self.tc_channel.receiver()
     }
 }
 
-pub struct SouthCanSender<'a, const SIZE: usize> {
+pub struct SouthCanSender<'a, Command, const SIZE: usize>
+where Command: SubsystemCommand {
     can_sender: BufferedFdCanSender,
-    com_channels: &'a InternalComChannels<SIZE>,
+    com_channels: &'a InternalComChannels<Command, SIZE>,
 }
 
-impl<'a, const SIZE: usize> SouthCanSender<'a, SIZE> {
-    pub fn new(can_sender: BufferedFdCanSender, com_channels: &'a InternalComChannels<SIZE>) -> Self {
+impl<'a, Command, const SIZE: usize> SouthCanSender<'a, Command, SIZE>
+where Command: SubsystemCommand {
+    pub fn new(can_sender: BufferedFdCanSender, com_channels: &'a InternalComChannels<Command, SIZE>) -> Self {
         Self { can_sender, com_channels }
     }
     fn gen_timesync_frame(&self) -> Option<FdFrame> {
@@ -135,13 +139,6 @@ impl<'a, const SIZE: usize> SouthCanSender<'a, SIZE> {
     }
 }
 
-pub struct SouthCanReceiver<'a, const SIZE: usize, OnTM>
-where OnTM: OnTMFunc {
-    can_receiver: BufferedFdCanReceiver,
-    com_channels: &'a InternalComChannels<SIZE>,
-    on_tm_func: OnTM,
-}
-
 pub struct EmptyFunc;
 pub trait OnTMFunc {
     async fn call(&self, def: &dyn ChellDefinition, envelope: &FdEnvelope);
@@ -156,9 +153,18 @@ impl OnTMFunc for EmptyFunc {
     }
 }
 
-impl<'a, const SIZE: usize, OnTM> SouthCanReceiver<'a, SIZE, OnTM>
-where OnTM: OnTMFunc {
-    pub fn new(can_receiver: BufferedFdCanReceiver, com_channels: &'a InternalComChannels<SIZE>, on_tm_func: OnTM) -> Self {
+pub struct SouthCanReceiver<'a, Command, const SIZE: usize, OnTM>
+where OnTM: OnTMFunc,
+      Command: SubsystemCommand {
+    can_receiver: BufferedFdCanReceiver,
+    com_channels: &'a InternalComChannels<Command, SIZE>,
+    on_tm_func: OnTM,
+}
+
+impl<'a, Command, const SIZE: usize, OnTM> SouthCanReceiver<'a, Command, SIZE, OnTM>
+where OnTM: OnTMFunc,
+      Command: SubsystemCommand {
+    pub fn new(can_receiver: BufferedFdCanReceiver, com_channels: &'a InternalComChannels<Command, SIZE>, on_tm_func: OnTM) -> Self {
         Self { can_receiver, com_channels, on_tm_func }
     }
 
@@ -195,7 +201,11 @@ where OnTM: OnTMFunc {
                     },
                     internal_msgs::Telecommand => {
                         match Telecommand::read(envelope.frame.data()) {
-                            Ok((_, cmd)) => self.com_channels.tc_channel.send(cmd).await,
+                            Ok((_, cmd)) => {
+                                if let Some(subsys_cmd) = Command::from(cmd) {
+                                    self.com_channels.tc_channel.send(subsys_cmd).await
+                                }
+                            },
                             Err(_) => error!("error parsing tc"),
                         }
                     },

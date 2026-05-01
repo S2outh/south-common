@@ -25,6 +25,35 @@ pub enum Telecommand {
     Pyro(PyroCommand),
 }
 
+pub struct NoCommand;
+
+pub trait SubsystemCommand {
+    fn from(cmd: Telecommand) -> Option<Self> where Self: Sized;
+}
+impl SubsystemCommand for NoCommand {
+    fn from(_cmd: Telecommand) -> Option<Self> {
+        None
+    }
+}
+
+macro_rules! derive_subsys_cmd {
+    ($var: path, $cmd: ty) => {
+        impl SubsystemCommand for $cmd {
+            fn from(cmd: Telecommand) -> Option<Self> {
+                if let $var(subsys_cmd) = cmd {
+                    Some(subsys_cmd)
+                } else {
+                    None
+                }
+            }
+        }
+    };
+}
+
+derive_subsys_cmd!(Telecommand::RocketLST, LSTCommand);
+derive_subsys_cmd!(Telecommand::EPS, EPSCommand);
+derive_subsys_cmd!(Telecommand::Pyro, PyroCommand);
+
 #[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub enum LSTCommand {
