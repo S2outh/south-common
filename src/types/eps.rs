@@ -40,7 +40,7 @@ bitflags! {
         const ROCKET_LST_1  = 1 << 2;
         const ROCKET_LST_2  = 1 << 3;
         const SENSOR_LOWER  = 1 << 4;
-        const ROCKET_HD     = 1 << 5;
+        const ROCKET_H_D    = 1 << 5;
         const BACKUP_SINK   = 1 << 6;
     }
 }
