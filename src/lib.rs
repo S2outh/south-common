@@ -1,6 +1,7 @@
 #![no_std]
 #![feature(const_trait_impl)]
 #![feature(const_cmp)]
+#![feature(iter_intersperse)]
 
 // TM definitions
 pub mod definitions;

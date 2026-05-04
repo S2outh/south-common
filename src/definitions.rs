@@ -43,10 +43,18 @@ pub mod telemetry {
     }
 
     mod eps {
-        #[chv(u8, flags = |v: &u8| crate::types::eps::SourceEnabled::from_bits_truncate(*v))]
+        #[chv(u8,
+            flags = |v: &u8| crate::parsing::names_from_bitflags(
+                crate::types::eps::SourceEnabled::from_bits_truncate(*v))
+            )
+        ]
         struct SourceEnabled;
 
-        #[chv(u8, flags = |v: &u8| crate::types::eps::SinkEnabled::from_bits_truncate(*v))]
+        #[chv(u8,
+            flags = |v: &u8| crate::parsing::names_from_bitflags(
+                crate::types::eps::SinkEnabled::from_bits_truncate(*v))
+            )
+        ]
         struct SinkEnabled;
 
         #[chv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
@@ -124,7 +132,11 @@ pub mod telemetry {
     }
 
     mod pyro {
-        #[chv(u8, flags = |v: &u8| crate::types::pyro::StateFlags::from_bits_truncate(*v))]
+        #[chv(u8,
+            flags = |v: &u8| crate::parsing::names_from_bitflags(
+                crate::types::pyro::StateFlags::from_bits_truncate(*v))
+            )
+        ]
         struct Status;
 
         #[chv(i16, c = |v| crate::parsing::fixed_dec(10., v))]

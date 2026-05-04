@@ -32,8 +32,6 @@ pub enum Sink {
 
 // # Telemetry types
 bitflags! {
-    #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-    #[cfg_attr(feature = "ground", serde(transparent))]
     pub struct SinkEnabled: u8 {
         const CARRIER       = 1 << 0;
         const UMBILICAL     = 1 << 1;
@@ -46,8 +44,6 @@ bitflags! {
 }
 
 bitflags! {
-    #[cfg_attr(feature = "ground", derive(serde::Serialize))]
-    #[cfg_attr(feature = "ground", serde(transparent))]
     pub struct SourceEnabled: u8 {
         const BAT_1    = 1 << 0;
         const BAT_2    = 1 << 1;
