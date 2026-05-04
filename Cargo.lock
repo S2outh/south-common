@@ -101,8 +101,8 @@ checksum = "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801"
 
 [[package]]
 name = "chell"
-version = "6.1.0"
-source = "git+https://github.com/S2outh/chell-sys.git#ff786aa229c0bfc57962b6069690a1d209273a68"
+version = "6.2.0"
+source = "git+https://github.com/S2outh/chell-sys.git#966a097d37b6d37e1567ee802e9f59d59e598952"
 dependencies = [
  "chell-macros",
  "erased-serde",
@@ -111,8 +111,8 @@ dependencies = [
 
 [[package]]
 name = "chell-macros"
-version = "6.1.0"
-source = "git+https://github.com/S2outh/chell-sys.git#ff786aa229c0bfc57962b6069690a1d209273a68"
+version = "6.2.0"
+source = "git+https://github.com/S2outh/chell-sys.git#966a097d37b6d37e1567ee802e9f59d59e598952"
 dependencies = [
  "heck",
  "proc-macro2",
@@ -371,8 +371,8 @@ dependencies = [
  "embedded-hal 1.0.0",
  "embedded-hal-async",
  "embedded-hal-nb",
- "embedded-io 0.7.1",
- "embedded-io-async 0.7.0",
+ "embedded-io",
+ "embedded-io-async",
  "embedded-storage",
  "embedded-storage-async",
  "futures-util",
@@ -401,7 +401,7 @@ dependencies = [
  "cfg-if",
  "critical-section",
  "defmt 1.0.1",
- "embedded-io-async 0.7.0",
+ "embedded-io-async",
  "futures-core",
  "futures-sink",
  "heapless",
@@ -435,24 +435,26 @@ dependencies = [
 
 [[package]]
 name = "embassy-usb-driver"
-version = "0.2.0"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "17119855ccc2d1f7470a39756b12068454ae27a3eabb037d940b5c03d9c77b7a"
+checksum = "6a189cbf1d8ab3c591f88632f85c1df892b6ab04116037cbee39dc37cbdcd79f"
 dependencies = [
  "defmt 1.0.1",
- "embedded-io-async 0.6.1",
+ "embedded-io-async",
 ]
 
 [[package]]
 name = "embassy-usb-synopsys-otg"
-version = "0.3.2"
+version = "0.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cbe46f4083109c7ea12a03ca61095d1e87c76fec52c7ca9ee06a42935606dacb"
+checksum = "fb205e26d59e483e8c48f91f637ec217ec7e2cfb0b61d50482301b991b4ff431"
 dependencies = [
  "critical-section",
  "defmt 1.0.1",
  "embassy-sync",
+ "embassy-time",
  "embassy-usb-driver",
+ "portable-atomic",
 ]
 
 [[package]]
@@ -501,12 +503,6 @@ dependencies = [
 
 [[package]]
 name = "embedded-io"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
-
-[[package]]
-name = "embedded-io"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9eb1aa714776b75c7e67e1da744b81a129b3ff919c8712b5e1b32252c1f07cc7"
@@ -516,21 +512,12 @@ dependencies = [
 
 [[package]]
 name = "embedded-io-async"
-version = "0.6.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ff09972d4073aa8c299395be75161d582e7629cd663171d62af73c8d50dba3f"
-dependencies = [
- "embedded-io 0.6.1",
-]
-
-[[package]]
-name = "embedded-io-async"
 version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2564b9f813c544241430e147d8bc454815ef9ac998878d30cc3055449f7fd4c0"
 dependencies = [
  "defmt 1.0.1",
- "embedded-io 0.7.1",
+ "embedded-io",
 ]
 
 [[package]]
@@ -626,9 +613,9 @@ dependencies = [
 
 [[package]]
 name = "heapless"
-version = "0.9.2"
+version = "0.9.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2af2455f757db2b292a9b1768c4b70186d443bcb3b316252d6b540aec1cd89ed"
+checksum = "25ba4bd83f9415b58b4ed8dc5714c76e626a105be4646c02630ad730ad3b5aa4"
 dependencies = [
  "hash32",
  "stable_deref_trait",
