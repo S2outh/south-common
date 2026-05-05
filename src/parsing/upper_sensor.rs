@@ -95,26 +95,26 @@ pub fn baro_pressure_convert_pa(v: &u16) -> f32 {
 // GPS
 pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
     // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
-    const A: f32 = 6_378_137.0;
-    const F: f32 = 1.0 / 298.257_223_563;
-    const E2: f32 = F * (2.0 - F);
-    const B: f32 = A * (1.0 - F);
-    const RAD2DEG: f32 = 180.0 / core::f32::consts::PI;
+    const A: f64 = 6_378_137.0;
+    const F: f64 = 1.0 / 298.257_223_563;
+    const E2: f64 = F * (2.0 - F);
+    const B: f64 = A * (1.0 - F);
+    const RAD2DEG: f64 = 180.0 / core::f64::consts::PI;
 
-    let x = ecef_cm.x as f32 * 0.01;
-    let y = ecef_cm.y as f32 * 0.01;
-    let z = ecef_cm.z as f32 * 0.01;
+    let x = ecef_cm.x as f64 * 0.01;
+    let y = ecef_cm.y as f64 * 0.01;
+    let z = ecef_cm.z as f64 * 0.01;
 
-    let lon = libm::atan2f(y, x);
-    let p = libm::sqrtf(x * x + y * y);
+    let lon = libm::atan2(y, x);
+    let p = libm::sqrt(x * x + y * y);
 
     if p < 1e-9 {
         let lat = if z >= 0.0 {
-            core::f32::consts::FRAC_PI_2
+            core::f64::consts::FRAC_PI_2
         } else {
-            -core::f32::consts::FRAC_PI_2
+            -core::f64::consts::FRAC_PI_2
         };
-        let h = libm::fabsf(z) - B;
+        let h = libm::fabs(z) - B;
         return LLH {
             lat: lat * RAD2DEG,
             lon: lon * RAD2DEG,
@@ -122,16 +122,16 @@ pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
         };
     }
 
-    let mut lat = libm::atan2f(z, p * (1.0 - E2));
+    let mut lat = libm::atan2(z, p * (1.0 - E2));
     let mut h = 0.0;
 
     for _ in 0..10 {
-        let sin_lat = libm::sinf(lat);
-        let n = A / libm::sqrtf(1.0 - E2 * sin_lat * sin_lat);
-        let cos_lat = libm::cosf(lat);
+        let sin_lat = libm::sin(lat);
+        let n = A / libm::sqrt(1.0 - E2 * sin_lat * sin_lat);
+        let cos_lat = libm::cos(lat);
         h = p / cos_lat - n;
-        let lat_next = libm::atan2f(z, p * (1.0 - E2 * n / (n + h)));
-        if libm::fabsf(lat_next - lat) < 1e-13 {
+        let lat_next = libm::atan2(z, p * (1.0 - E2 * n / (n + h)));
+        if libm::fabs(lat_next - lat) < 1e-13 {
             lat = lat_next;
             break;
         }

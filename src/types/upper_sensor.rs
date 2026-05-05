@@ -20,7 +20,7 @@ impl From<([i16; 3], [i16; 3])> for AccelRaw {
 #[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct LLH {
-    pub lat: f32,
-    pub lon: f32,
-    pub h: f32,
+    pub lat: f64,
+    pub lon: f64,
+    pub h: f64,
 }
