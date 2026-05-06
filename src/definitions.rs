@@ -10,6 +10,9 @@ mod internal_msgs {
 
     #[chv(crate::types::Timesync)]
     struct TimesyncAnswer;
+
+    #[chv(())]
+    struct LaunchDetected;
 }
 
 #[chell_definition(id = 10)]
