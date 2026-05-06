@@ -141,13 +141,13 @@ where Command: SubsystemCommand {
 
 pub struct EmptyFunc;
 pub trait OnTMFunc {
-    async fn call(&self, def: &dyn ChellDefinition, envelope: &FdEnvelope);
+    async fn call(&mut self, def: &dyn ChellDefinition, envelope: &FdEnvelope);
     fn should_call(&self) -> bool {
         true
     }
 }
 impl OnTMFunc for EmptyFunc {
-    async fn call(&self, _def: &dyn ChellDefinition, _envelope: &FdEnvelope) {}
+    async fn call(&mut self, _def: &dyn ChellDefinition, _envelope: &FdEnvelope) {}
     fn should_call(&self) -> bool {
         false
     }
@@ -186,7 +186,7 @@ where OnTM: OnTMFunc,
         }
     }
     
-    async fn handle_can_msg(&self, envelope: FdEnvelope) {
+    async fn handle_can_msg(&mut self, envelope: FdEnvelope) {
         if let embedded_can::Id::Standard(id) = envelope.frame.id() {
             if let Ok(def) = internal_msgs::from_id(id.as_raw()) {
                 match_value!(def, {
