@@ -18,7 +18,7 @@ pub struct Timesync {
 
 // # Telecommands
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
 pub enum Telecommand {
     RocketLST(LSTCommand),
     EPS(EPSCommand),
@@ -55,7 +55,7 @@ derive_subsys_cmd!(Telecommand::EPS, EPSCommand);
 derive_subsys_cmd!(Telecommand::Pyro, PyroCommand);
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
 pub enum LSTCommand {
     Reboot,
 }
