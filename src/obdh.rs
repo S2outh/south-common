@@ -134,6 +134,7 @@ where Command: SubsystemCommand {
             };
             if let Some(frame) = opt_frame {
                 self.can_sender.write(frame).await;
+                defmt::debug!("Can message sent");
             }
         }
     }
@@ -188,6 +189,7 @@ where OnTM: OnTMFunc,
     
     async fn handle_can_msg(&mut self, envelope: FdEnvelope) {
         if let embedded_can::Id::Standard(id) = envelope.frame.id() {
+            defmt::debug!("Can message received");
             if let Ok(def) = internal_msgs::from_id(id.as_raw()) {
                 match_value!(def, {
                     internal_msgs::TimesyncRequest => {
@@ -211,7 +213,8 @@ where OnTM: OnTMFunc,
                     },
                 })
             }
-            else if self.on_tm_func.should_call() && let Ok(def) = telemetry::from_id(id.as_raw()) {
+            else if self.on_tm_func.should_call()
+                && let Ok(def) = telemetry::from_id(id.as_raw()) {
                 self.on_tm_func.call(def, &envelope).await;
             } else {
                 error!("can id not in any chell def block")
