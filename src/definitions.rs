@@ -130,7 +130,7 @@ pub mod telemetry {
         #[chv(crate::types::Vector3i32, mt = crate::parsing::upper_sensor::mag_f32)]
         struct Magneto;
 
-        #[chv(i16)]
+        #[chv(i16, c = |v| crate::parsing::fixed_dec(10., v))]
         struct InternalTemperature;
     }
 

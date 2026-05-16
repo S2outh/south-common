@@ -4,10 +4,12 @@ use chell::*;
 #[derive(ChellValue)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
 pub enum EPSCommand {
-    EnableSource(FlipFlopInput, Option<u8>),
-    DisableSource(FlipFlopInput, Option<u8>),
-    EnableSink(Sink, Option<u8>),
-    DisableSink(Sink, Option<u8>),
+    EnableSource(FlipFlopInput),
+    DisableSource(FlipFlopInput),
+    RebootSource(FlipFlopInput),
+    EnableSink(Sink),
+    DisableSink(Sink),
+    RebootSink(Sink),
 }
 
 #[derive(ChellValue, Clone, Copy)]
