@@ -1,5 +1,5 @@
 {
   "cargo": {
-    "features": ["ground", "h7"]
+    "features": ["ground", "h7", "timesync"]
   }
 }

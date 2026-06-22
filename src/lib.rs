@@ -33,5 +33,9 @@ mod parsing;
 #[cfg(feature = "ground")]
 extern crate alloc;
 
+// timesync
+#[cfg(feature = "timesync")]
+pub mod timesync;
+
 // public chell reexport
 pub use chell;

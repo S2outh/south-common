@@ -12,6 +12,8 @@ h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 embedded = [ "embassy-executor", "embassy-stm32", "embassy-futures", "embassy-time", "embassy-sync", "portable-atomic", "defmt", "heapless", "embedded-can" ]
 ground = ["chell/ground", "dep:serde", "dep:erased-serde", "dep:libm" ]
 
+timesync = [ "embassy-net", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
+
 [dependencies]
 chell = { git = "https://github.com/S2outh/chell-sys.git" }
 
@@ -37,6 +39,12 @@ erased-serde = { version = "0.4.10", default-features = false, features = ["allo
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.11.0" }
 paste = "1.0.15"
+
+# timesync
+sntpc = { version = "0.10.1", features = ["defmt"], optional = true }
+embassy-net = { version = "0.9.0", features = ["defmt", "tcp", "udp", "dhcpv4"], optional = true }
+sntpc-net-embassy = { version = "0.10.0", features = ["defmt", "ipv6"], optional = true }
+sntpc-time-embassy = { version = "0.5.0", optional = true }
 
 [build-dependencies]
 serde_json = "1.0.149"
