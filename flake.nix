@@ -1,5 +1,5 @@
 {
-  description = "rust flake";
+  description = "embassy flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -10,26 +10,41 @@
     };
   };
 
-  outputs = { self, nixpkgs, fenix, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, fenix }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ fenix.overlays.default ];
+          overlays = [
+            fenix.overlays.default 
+          ];
         };
+        profile = pkgs.fenix.complete;
+        rust-analyzer = pkgs.fenix.rust-analyzer;
+        std-lib = pkgs.fenix.targets.thumbv7em-none-eabihf.latest;
+        rust-toolchain = pkgs.fenix.combine [
+          profile.rustc-unwrapped
+          profile.rust-src
+          profile.cargo
+          profile.rustfmt
+          profile.clippy
+          std-lib.rust-std
+        ];
       in
       {
         devShells.default =
-        let
-          rust = pkgs.fenix.complete.toolchain;
-        in
         pkgs.mkShell {
-          buildInputs = [
-            rust
-            
-            pkgs.cargo-edit
-            pkgs.cargo-expand
+          buildInputs = with pkgs; [
+            rust-toolchain
+            rust-analyzer
+
+            # extra cargo tools
+            cargo-edit
+            cargo-expand
           ];
+
+          # set the rust src for rust_analyzer
+          RUST_SRC_PATH = "${rust-toolchain}/lib/rustlib/src/rust/library";
         };
       }
     );

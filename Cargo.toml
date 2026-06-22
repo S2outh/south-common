@@ -22,7 +22,7 @@ spin = { version = "0.10.0", features = ["lazy", "portable-atomic"], default-fea
 
 # air
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread", "defmt"], optional = true }
-embassy-stm32 = { version = "0.6.0", features = [ "defmt" ], optional = true }
+embassy-stm32 = { version = "0.6.0", features = [ "defmt", "time-driver-any" ], optional = true }
 embassy-futures = { version = "0.1.2", optional = true }
 embassy-time = { version = "0.5.1", features = [ "defmt" ], optional = true }
 embassy-sync = { version = "0.8.0", features = ["defmt"], optional = true }
