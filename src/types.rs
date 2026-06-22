@@ -28,7 +28,9 @@ pub enum Telecommand {
 pub struct NoCommand;
 
 pub trait SubsystemCommand {
-    fn from(cmd: Telecommand) -> Option<Self> where Self: Sized;
+    fn from(cmd: Telecommand) -> Option<Self>
+    where
+        Self: Sized;
 }
 impl SubsystemCommand for NoCommand {
     fn from(_cmd: Telecommand) -> Option<Self> {

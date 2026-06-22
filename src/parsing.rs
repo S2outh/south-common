@@ -13,5 +13,9 @@ pub fn mask(shift: u8, length: u8, v: &u8) -> u8 {
 }
 
 pub fn names_from_bitflags<F: Flags>(bitflags: F) -> alloc::string::String {
-    bitflags.iter_names().map(|(name, _flag)| name).intersperse(" | ").collect()
+    bitflags
+        .iter_names()
+        .map(|(name, _flag)| name)
+        .intersperse(" | ")
+        .collect()
 }

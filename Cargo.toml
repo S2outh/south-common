@@ -10,9 +10,9 @@ g0 = [ "embedded", "embassy-stm32/stm32g0b1ke" ]
 h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 
 embedded = [ "embassy-executor", "embassy-stm32", "embassy-futures", "embassy-time", "embassy-sync", "portable-atomic", "defmt", "heapless", "embedded-can" ]
-ground = ["chell/ground", "dep:serde", "dep:erased-serde", "dep:libm" ]
+ground = ["chell/ground", "serde", "erased-serde", "libm" ]
 
-timesync = [ "embassy-net", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
+timesync = [ "defmt", "embassy-net", "embassy-time", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
 
 [dependencies]
 chell = { git = "https://github.com/S2outh/chell-sys.git" }

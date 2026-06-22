@@ -3,7 +3,7 @@
 #![feature(const_cmp)]
 #![feature(const_default)]
 #![feature(iter_intersperse)]
-
+#[allow(async_fn_in_trait)]
 // TM definitions
 pub mod definitions;
 
@@ -22,9 +22,9 @@ pub use paste;
 
 // Common onboard configs
 #[cfg(feature = "embedded")]
-pub mod utils;
-#[cfg(feature = "embedded")]
 pub mod obdh;
+#[cfg(feature = "embedded")]
+pub mod utils;
 
 // Common ground configs
 #[cfg(feature = "ground")]
