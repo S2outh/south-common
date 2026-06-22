@@ -8,15 +8,15 @@ use embassy_net::udp::{BindError, UdpSocket};
 
 const TIME_REQUEST_INTERVAL: Duration = Duration::from_secs(30);
 
-pub struct NTPTimeSource<'a, F: Fn(u64)> {
-    set_time_fn: F,
+pub struct NTPTimeSource<'a, 'b> {
+    set_time_fn: &'b dyn Fn(u64),
     server_addr: net::SocketAddr,
     udp_socket: UdpSocketWrapper<'a>,
     ntp_context: NtpContext<EmbassyTimestampGenerator>
 }
 
-impl<'a, F: Fn(u64)> NTPTimeSource<'a, F> {
-    pub fn new(mut socket: UdpSocket<'a>, server_addr: net::SocketAddr, set_time_fn: F)
+impl<'a, 'b> NTPTimeSource<'a, 'b> {
+    pub fn new(mut socket: UdpSocket<'a>, server_addr: net::SocketAddr, set_time_fn: &'b dyn Fn(u64))
         -> Result<Self, BindError> {
 
         socket.bind(0)?;
