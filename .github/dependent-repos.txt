@@ -7,4 +7,5 @@ S2outh/pyro
 S2outh/umbilical
 S2outh/rocketlst-software path=./radio-air/
 S2outh/rocketlst-software path=./radio-ground/
-S2outh/tmtc-linux-ground branch=main
+S2outh/radio-linux-ground branch=main
+S2outh/umbilical-linux branch=main
