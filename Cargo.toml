@@ -20,7 +20,7 @@ chell = { git = "https://github.com/S2outh/chell-sys.git" }
 # config
 lsm6dsv32 = { git = "https://github.com/S2outh/imu-driver.git", default-features = false }
 rm3100 = { git = "https://github.com/S2outh/magneto-driver.git", default-features = false }
-spin = { version = "0.10.0", features = ["lazy", "portable-atomic"], default-features = false }
+spin = { version = "0.12.2", features = ["lazy", "portable-atomic"], default-features = false }
 
 # air
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread", "defmt"], optional = true }
@@ -28,7 +28,7 @@ embassy-stm32 = { version = "0.6.0", features = [ "defmt", "time-driver-any" ], 
 embassy-futures = { version = "0.1.2", optional = true }
 embassy-time = { version = "0.5.1", features = [ "defmt" ], optional = true }
 embassy-sync = { version = "0.8.0", features = ["defmt"], optional = true }
-defmt = { version = "1.0", optional = true }
+defmt = { version = "1.1", optional = true }
 heapless = { version = "0.9", default-features = false, optional = true }
 portable-atomic = { version = "1.13", optional = true }
 embedded-can = { version = "0.4.1", optional = true }
@@ -37,15 +37,15 @@ embedded-can = { version = "0.4.1", optional = true }
 libm = { version = "0.2.16", optional = true }
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
-bitflags = { version = "2.11.0" }
+bitflags = { version = "2.13.1" }
 paste = "1.0.15"
 
 # timesync
-sntpc = { version = "0.10.1", features = ["defmt"], optional = true }
-embassy-net = { version = "0.9.0", features = ["defmt", "tcp", "udp", "dhcpv4"], optional = true }
-sntpc-net-embassy = { version = "0.10.0", features = ["defmt", "ipv6"], optional = true }
-sntpc-time-embassy = { version = "0.5.0", optional = true }
+sntpc = { version = "0.11.0", features = ["defmt"], optional = true }
+embassy-net = { version = "0.9.1", features = ["defmt", "tcp", "udp", "dhcpv4"], optional = true }
+sntpc-net-embassy = { version = "0.11.0", features = ["defmt", "ipv6"], optional = true }
+sntpc-time-embassy = { version = "0.6.0", optional = true }
 
 [build-dependencies]
-serde_json = "1.0.149"
+serde_json = "1.0.150"
 serde = { version = "1.0.228", features = ["derive"] }

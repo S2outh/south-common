@@ -1,5 +1,5 @@
 use lsm6dsv32::config::{FifoDisabled, ImuConfig, Int1Disabled, Int2Disabled};
-use spin::Lazy;
+use spin::LazyLock;
 
 use crate::{
     configs::{imu_config, mag_config},
@@ -9,18 +9,18 @@ use crate::{
     },
 };
 
-static IMU_CONFIG: Lazy<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> =
-    Lazy::new(imu_config::get_imu_config);
-static GYRO_SCALING: Lazy<f32> = Lazy::new(|| IMU_CONFIG.gyro.calc_scaling_factor(true));
-static ACCEL_LOW_RANGE_SCALING: Lazy<f32> =
-    Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor(true));
-static ACCEL_FULL_RANGE_SCALING: Lazy<f32> =
-    Lazy::new(|| IMU_CONFIG.accel.calc_scaling_factor_ch2(true));
-static IMU_ACCEL_SCALING_THRESHOLD: Lazy<f32> =
-    Lazy::new(|| libm::powf(2., 2. + (IMU_CONFIG.accel.full_scale as u8 as f32)));
+static IMU_CONFIG: LazyLock<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> =
+    LazyLock::new(imu_config::get_imu_config);
+static GYRO_SCALING: LazyLock<f32> = LazyLock::new(|| IMU_CONFIG.gyro.calc_scaling_factor(true));
+static ACCEL_LOW_RANGE_SCALING: LazyLock<f32> =
+    LazyLock::new(|| IMU_CONFIG.accel.calc_scaling_factor(true));
+static ACCEL_FULL_RANGE_SCALING: LazyLock<f32> =
+    LazyLock::new(|| IMU_CONFIG.accel.calc_scaling_factor_ch2(true));
+static IMU_ACCEL_SCALING_THRESHOLD: LazyLock<f32> =
+    LazyLock::new(|| libm::powf(2., 2. + (IMU_CONFIG.accel.full_scale as u8 as f32)));
 
-static MAG_CONFIG: Lazy<rm3100::config::Config> = Lazy::new(mag_config::get_mag_config);
-static MAG_SCALING: Lazy<f32> = Lazy::new(|| MAG_CONFIG.calc_scaling_factor());
+static MAG_CONFIG: LazyLock<rm3100::config::Config> = LazyLock::new(mag_config::get_mag_config);
+static MAG_SCALING: LazyLock<f32> = LazyLock::new(|| MAG_CONFIG.calc_scaling_factor());
 
 // Imu
 pub fn gyro_f32(raw: &Vector3i16) -> Vector3f32 {

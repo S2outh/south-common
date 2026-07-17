@@ -6,15 +6,7 @@ beacon!(
     crate::definitions::telemetry::lst,
     crate::definitions::telemetry::Timestamp,
     id = 0,
-    telemetry(
-        Uptime,
-        Rssi,
-        Lqi,
-        PacketsSent,
-        PacketsGood,
-        PacketsRejectedChecksum,
-        PacketsRejectedOther
-    )
+    telemetry(Uptime, PacketsSent)
 );
 
 beacon!(
@@ -32,7 +24,7 @@ beacon!(
         Bat1Current,
         Bat2Voltage,
         Bat2Temperature,
-        Bat2Current
+        Bat2Current,
     )
 );
 
@@ -55,7 +47,7 @@ beacon!(
         gps::Status,
         Baro,
         Magneto,
-        InternalTemperature
+        InternalTemperature,
     )
 );
 

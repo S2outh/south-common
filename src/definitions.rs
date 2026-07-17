@@ -147,7 +147,7 @@ pub mod telemetry {
         #[chv(crate::types::lower_sensor::LowerSensorAdcValues,
             pres_ch1_pa = crate::parsing::lower_sensor::pascal_ch1,
             pres_ch2_pa = crate::parsing::lower_sensor::pascal_ch2,
-            temp_c = crate::parsing::lower_sensor::celcius
+            temp_c = crate::parsing::lower_sensor::celcius,
         )]
         struct Adc;
     }
