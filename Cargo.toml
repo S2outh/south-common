@@ -10,7 +10,7 @@ g0 = [ "embedded", "embassy-stm32/stm32g0b1ke" ]
 h7 = [ "embedded", "embassy-stm32/stm32h723vg" ]
 
 embedded = [ "embassy-executor", "embassy-stm32", "embassy-futures", "embassy-time", "embassy-sync", "portable-atomic", "defmt", "heapless", "embedded-can" ]
-ground = ["chell/ground", "serde", "erased-serde", "libm" ]
+ground = ["chell/ground", "serde", "erased-serde" ]
 
 timesync = [ "defmt", "embassy-net", "embassy-time", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
 
@@ -21,6 +21,7 @@ chell = { git = "https://github.com/S2outh/chell-sys.git" }
 lsm6dsv32 = { git = "https://github.com/S2outh/imu-driver.git", default-features = false }
 rm3100 = { git = "https://github.com/S2outh/magneto-driver.git", default-features = false }
 spin = { version = "0.12.2", features = ["lazy", "portable-atomic"], default-features = false }
+libm = { version = "0.2.16" }
 
 # air
 embassy-executor = { version = "0.10.0", features = ["platform-cortex-m", "executor-thread", "defmt"], optional = true }
@@ -34,7 +35,6 @@ portable-atomic = { version = "1.13", optional = true }
 embedded-can = { version = "0.4.1", optional = true }
 
 # ground
-libm = { version = "0.2.16", optional = true }
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
 serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.13.1" }

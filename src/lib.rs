@@ -10,6 +10,9 @@ pub mod definitions;
 // TM types
 pub mod types;
 
+// Parsing functions
+mod parsing;
+
 // Beacon definitions
 pub mod beacons;
 
@@ -25,10 +28,6 @@ pub use paste;
 pub mod obdh;
 #[cfg(feature = "embedded")]
 pub mod utils;
-
-// Common ground configs
-#[cfg(feature = "ground")]
-mod parsing;
 
 #[cfg(feature = "ground")]
 extern crate alloc;

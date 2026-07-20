@@ -27,9 +27,9 @@ pub enum PyroState {
 // # Telemetry types
 bitflags! {
     pub struct StateFlags: u8 {
-        const SAFE_A = 1 << 0;
+        const ARMD_A = 1 << 0;
         const FIRE_A = 1 << 1;
-        const SAFE_B = 1 << 2;
+        const ARMD_B = 1 << 2;
         const FIRE_B = 1 << 3;
     }
 }
