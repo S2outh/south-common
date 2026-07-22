@@ -4,8 +4,7 @@ use spin::LazyLock;
 use crate::{
     configs::{imu_config, mag_config},
     types::{
-        Vector3f32, Vector3i16, Vector3i32,
-        upper_sensor::{AccelRaw, LLH},
+        Vector3f32, Vector3f64, Vector3i16, Vector3i32, upper_sensor::{AccelRaw, LLH}
     },
 };
 
@@ -93,6 +92,14 @@ pub fn baro_pressure_convert_pa(v: &u16) -> f32 {
 }
 
 // GPS
+pub fn ecef_cm_to_m(ecef_cm: &Vector3i32) -> Vector3f64 {
+    Vector3f64 {
+        x: ecef_cm.x as f64 * 0.01,
+        y: ecef_cm.y as f64 * 0.01,
+        z: ecef_cm.z as f64 * 0.01,
+    }
+}
+
 pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
     // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
     const A: f64 = 6_378_137.0;

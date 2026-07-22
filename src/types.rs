@@ -116,3 +116,11 @@ impl From<[f32; 3]> for Vector3f32 {
         }
     }
 }
+
+#[derive(ChellValue, Clone, Copy, Debug)]
+#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+pub struct Vector3f64 {
+    pub x: f64,
+    pub y: f64,
+    pub z: f64,
+}

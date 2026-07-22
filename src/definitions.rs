@@ -113,6 +113,10 @@ pub mod telemetry {
         mod gps {
             #[chv(
                 crate::types::Vector3i32,
+                m(
+                    crate::types::Vector3f64,
+                    crate::parsing::upper_sensor::ecef_cm_to_m
+                ),
                 llh(
                     crate::types::upper_sensor::LLH,
                     crate::parsing::upper_sensor::ecef_cm_to_llh
