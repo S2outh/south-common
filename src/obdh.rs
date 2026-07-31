@@ -78,7 +78,7 @@ where
     pub async fn send_tm(&self, data: ChellUnion<SIZE>) {
         self.tm_channel.send(data).await
     }
-    pub async fn receive_tm(&self) -> Command {
+    pub async fn receive_tc(&self) -> Command {
         self.tc_channel.receive().await
     }
 }
