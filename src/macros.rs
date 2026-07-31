@@ -6,8 +6,6 @@ macro_rules! gen_obdh_types {
             type [<$name ComChannels>] = $crate::obdh::InternalComChannels<$subsys_cmd, {[<$name ChellUnion>]::SIZE}>;
             type [<$name CanReceiver>] = $crate::obdh::SouthCanReceiver<'static, $subsys_cmd, {[<$name ChellUnion>]::SIZE}, $on_tm>;
             type [<$name CanSender>] = $crate::obdh::SouthCanSender<'static, $subsys_cmd, {[<$name ChellUnion>]::SIZE}>;
-            type [<$name TMSender>] = $crate::obdh::TMSender<'static, {[<$name ChellUnion>]::SIZE}>;
-            type [<$name TCReceiver>] = $crate::obdh::TCReceiver<'static, $subsys_cmd>;
         }
     };
 

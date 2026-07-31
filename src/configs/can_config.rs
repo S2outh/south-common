@@ -5,6 +5,8 @@ use embassy_stm32::can::{
 use embedded_can::StandardId;
 use heapless::Vec;
 
+use crate::definitions;
+
 /// Can peripheral in configuration stage
 pub struct CanPeriphConfig<'d> {
     filters: Vec<StandardFilter, 28>,
@@ -34,16 +36,21 @@ impl<'d> CanPeriphConfig<'d> {
         // reject all can Ids by default
         configurator.set_config(
             can::config::FdCanConfig::default()
-                .set_global_filter(can::config::GlobalFilter::reject_all()),
+                .set_global_filter(can::config::GlobalFilter::reject_all())
+                .set_automatic_retransmit(true)
+                .set_tx_buffer_mode(can::config::TxBufferMode::Priority),
         );
         configurator.set_bitrate(1_000_000);
         configurator.set_fd_data_bitrate(2_000_000, false);
 
         let filters = Vec::new();
-        Self {
+        let mut cpc = Self {
             filters,
             configurator,
-        }
+        };
+        cpc.add_receive_topic_range(definitions::command_msgs::id_range());
+        cpc.add_receive_topic_range(definitions::timesync_msgs::id_range());
+        cpc
     }
     /// # add topic filter
     pub fn add_receive_topic(&mut self, topic: u16) -> Result<&mut Self, FiltersFullError> {

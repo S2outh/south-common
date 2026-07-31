@@ -1,21 +1,24 @@
 use chell::*;
 
 #[chell_definition(id = 0)]
-mod internal_msgs {
+mod command_msgs {
     #[chv(crate::types::Telecommand)]
     struct Telecommand;
-
-    #[chv(u8)]
-    struct TimesyncRequest;
-
-    #[chv(crate::types::Timesync)]
-    struct TimesyncAnswer;
 
     #[chv(())]
     struct LaunchDetected;
 }
 
-#[chell_definition(id = 10)]
+#[chell_definition(id = 5)]
+mod timesync_msgs {
+    #[chv((), id_range = 8)]
+    struct TimesyncRequest;
+
+    #[chv(crate::types::Timesync, id_range = 8)]
+    struct TimesyncAnswer;
+}
+
+#[chell_definition(id = 30)]
 pub mod telemetry {
 
     /// This is a utc timestamp in microseconds
@@ -113,10 +116,7 @@ pub mod telemetry {
         mod gps {
             #[chv(
                 crate::types::Vector3i32,
-                m(
-                    crate::types::Vector3f64,
-                    crate::parsing::upper_sensor::ecef_cm_to_m
-                ),
+                m(crate::types::Vector3f64, crate::parsing::upper_sensor::ecef_cm_to_m),
                 llh(
                     crate::types::upper_sensor::LLH,
                     crate::parsing::upper_sensor::ecef_cm_to_llh

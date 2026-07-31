@@ -4,7 +4,8 @@ use spin::LazyLock;
 use crate::{
     configs::{imu_config, mag_config},
     types::{
-        Vector3f32, Vector3f64, Vector3i16, Vector3i32, upper_sensor::{AccelRaw, LLH}
+        Vector3f32, Vector3f64, Vector3i16, Vector3i32,
+        upper_sensor::{AccelRaw, LLH},
     },
 };
 

@@ -3,7 +3,8 @@ set -euo pipefail
 
 cargo rustdoc -- -Z unstable-options --output-format json
 
-INPUT="target/doc/south_common.json"
+TARGET_ARCH="thumbv7em-none-eabihf";
+INPUT="target/${TARGET_ARCH}/doc/south_common.json"
 
 # Iterate safely over JSON array using jq
 jq -c '.index | to_entries[] | select(.value.name=="__TOOLING_METADATA") | .value.inner.constant.const.expr' "$INPUT" \

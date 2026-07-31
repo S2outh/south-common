@@ -1,9 +1,9 @@
 use crate::{
-    definitions::{internal_msgs, telemetry},
-    types::{SubsystemCommand, Telecommand, Timesync},
+    definitions::{command_msgs, telemetry, timesync_msgs},
+    types::{SubsystemCommand, Timesync},
 };
-use chell::{ChellDefinition, ChellUnion, ChellValue, fd_compat_chell_union, match_value};
-use defmt::{Debug2Format, error};
+use chell::{ChellDefinition, ChellUnion, fd_compat_chell_union, match_def};
+use defmt::error;
 use embassy_futures::select::{Either3, select3};
 use embassy_stm32::can::{
     BufferedFdCanReceiver, BufferedFdCanSender,
@@ -16,7 +16,7 @@ use embassy_time::{Duration, Instant, Ticker};
 use portable_atomic::{AtomicU8, AtomicU64, Ordering};
 
 // common constants
-type TimesyncContainer = fd_compat_chell_union!(internal_msgs::TimesyncAnswer);
+type TimesyncContainer = fd_compat_chell_union!(timesync_msgs::TimesyncAnswer);
 const TIMESYNC_REQ_INTERVAL: Duration = Duration::from_secs(15);
 const TM_BUFFER_SIZE: usize = 8;
 const TC_BUFFER_SIZE: usize = 2;
@@ -75,11 +75,11 @@ where
             .store(time_us - Instant::now().as_micros(), Ordering::Release);
         self.time_ref_prio.store(prio, Ordering::Release);
     }
-    pub fn get_tm_sender<'a>(&'a self) -> TMSender<'a, SIZE> {
-        self.tm_channel.sender()
+    pub async fn send_tm(&self, data: ChellUnion<SIZE>) {
+        self.tm_channel.send(data).await
     }
-    pub fn get_tc_receiver<'a>(&'a self) -> TCReceiver<'a, Command> {
-        self.tc_channel.receiver()
+    pub async fn receive_tm(&self) -> Command {
+        self.tc_channel.receive().await
     }
 }
 
@@ -106,8 +106,11 @@ where
     }
     fn gen_timesync_frame(&self) -> Option<FdFrame> {
         let frame = FdFrame::new_standard(
-            internal_msgs::TimesyncRequest.id(),
-            core::slice::from_ref(&self.com_channels.can_device_id.load(Ordering::Acquire)),
+            timesync_msgs::TimesyncRequest
+                .id()
+                .get(self.com_channels.can_device_id.load(Ordering::Acquire) as u16)
+                .unwrap(),
+            &[],
         )
         .unwrap();
         self.com_channels
@@ -117,7 +120,16 @@ where
     }
 
     fn gen_tm_frame(&self, container: ChellUnion<SIZE>) -> Option<FdFrame> {
-        Some(FdFrame::new_standard(container.id(), container.fd_bytes()).unwrap())
+        Some(
+            FdFrame::new_standard(
+                container
+                    .id()
+                    .get(self.com_channels.can_device_id.load(Ordering::Acquire) as u16)
+                    .unwrap(),
+                container.fd_bytes(),
+            )
+            .unwrap(),
+        )
     }
 
     fn gen_time_ref_answer(&self, request_id: u8, local_recv_instant: Instant) -> Option<FdFrame> {
@@ -134,8 +146,17 @@ where
             unix_time_recv,
             unix_time_snd,
         };
-        let container = TimesyncContainer::new(&internal_msgs::TimesyncAnswer, &msg).unwrap();
-        Some(FdFrame::new_standard(container.id(), container.fd_bytes()).unwrap())
+        let container = TimesyncContainer::new(&timesync_msgs::TimesyncAnswer, &msg).unwrap();
+        Some(
+            FdFrame::new_standard(
+                container
+                    .id()
+                    .get(self.com_channels.can_device_id.load(Ordering::Acquire) as u16)
+                    .unwrap(),
+                container.fd_bytes(),
+            )
+            .unwrap(),
+        )
     }
     pub async fn run(&mut self) -> ! {
         let mut timesync_req_ticker = Ticker::every(TIMESYNC_REQ_INTERVAL);
@@ -206,56 +227,47 @@ where
         }
     }
 
-    fn update_time_ref(&self, envelope: &FdEnvelope) {
-        match Timesync::read(envelope.frame.data()) {
-            Ok((_len, timesync_answer)) => {
-                if timesync_answer.request_id
-                    != self.com_channels.can_device_id.load(Ordering::Acquire)
-                    || timesync_answer.priority
-                        >= self.com_channels.time_ref_prio.load(Ordering::Acquire)
-                {
-                    return;
-                }
-                self.com_channels.time_ref_prio.store(
-                    timesync_answer.priority.saturating_add(1),
-                    Ordering::Release,
-                );
-                let one_way_delay = (envelope.ts.as_micros()
-                    - self.com_channels.req_time.load(Ordering::Acquire))
-                    - (timesync_answer.unix_time_snd - timesync_answer.unix_time_recv);
-                let time_ref =
-                    timesync_answer.unix_time_snd + one_way_delay - envelope.ts.as_micros();
-                self.com_channels
-                    .time_ref
-                    .store(time_ref, Ordering::Release);
-            }
-            Err(e) => error!("could not read timesync msg {}", Debug2Format(&e)),
+    fn update_time_ref(&self, timesync_answer: Timesync, ts: Instant) {
+        if timesync_answer.request_id != self.com_channels.can_device_id.load(Ordering::Acquire)
+            || timesync_answer.priority >= self.com_channels.time_ref_prio.load(Ordering::Acquire)
+        {
+            return;
         }
+        self.com_channels.time_ref_prio.store(
+            timesync_answer.priority.saturating_add(1),
+            Ordering::Release,
+        );
+        let one_way_delay = (ts.as_micros() - self.com_channels.req_time.load(Ordering::Acquire))
+            - (timesync_answer.unix_time_snd - timesync_answer.unix_time_recv);
+        let time_ref = timesync_answer.unix_time_snd + one_way_delay - ts.as_micros();
+        self.com_channels
+            .time_ref
+            .store(time_ref, Ordering::Release);
     }
 
     async fn handle_can_msg(&mut self, envelope: FdEnvelope) {
         if let embedded_can::Id::Standard(id) = envelope.frame.id() {
             defmt::debug!("Can message received");
-            if let Ok(def) = internal_msgs::from_id(id.as_raw()) {
-                match_value!(def, {
-                    internal_msgs::TimesyncRequest => {
-                        match u8::read(envelope.frame.data()) {
-                            Ok((_, request_id)) => self.com_channels.timesync_req_signal.signal((request_id, envelope.ts)),
-                            Err(_) => error!("error parsing ts req"),
+            if let Ok(def) = command_msgs::from_id(id.as_raw()) {
+                match_def!(def, bytes: envelope.frame.data(), error: error!("error parsing command"), {
+                    command_msgs::Telecommand [cmd] => {
+                        if let Some(subsys_cmd) = Command::from(cmd) {
+                            self.com_channels.tc_channel.send(subsys_cmd).await
                         }
                     },
-                    internal_msgs::TimesyncAnswer => {
-                        self.update_time_ref(&envelope);
+                })
+            } else if let Ok(def) = timesync_msgs::from_id(id.as_raw()) {
+                match_def!(def, bytes: envelope.frame.data(), error: error!("could not read timesync msg"), {
+                    timesync_msgs::TimesyncRequest => {
+                        self.com_channels.timesync_req_signal.signal(
+                            (
+                                timesync_msgs::TimesyncRequest.id().offset(id.as_raw()).unwrap() as u8,
+                                envelope.ts,
+                            )
+                        );
                     },
-                    internal_msgs::Telecommand => {
-                        match Telecommand::read(envelope.frame.data()) {
-                            Ok((_, cmd)) => {
-                                if let Some(subsys_cmd) = Command::from(cmd) {
-                                    self.com_channels.tc_channel.send(subsys_cmd).await
-                                }
-                            },
-                            Err(_) => error!("error parsing tc"),
-                        }
+                    timesync_msgs::TimesyncAnswer [answer] => {
+                        self.update_time_ref(answer, envelope.ts);
                     },
                 })
             } else if self.on_tm_func.should_call()
