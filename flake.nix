@@ -4,10 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    fenix = {
-      url = "github:nix-community/fenix/monthly";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    fenix.url = "github:nix-community/fenix/monthly";
   };
 
   outputs = { self, nixpkgs, flake-utils, fenix }:
@@ -15,19 +12,18 @@
       let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [
-            fenix.overlays.default 
-          ];
         };
-        profile = pkgs.fenix.complete;
-        rust-analyzer = pkgs.fenix.rust-analyzer;
-        std-lib = pkgs.fenix.targets.thumbv7em-none-eabihf.latest;
-        rust-toolchain = pkgs.fenix.combine [
-          profile.rustc-unwrapped
+        fpkgs = fenix.packages.${system};
+        profile = fpkgs.complete;
+        std-lib = fpkgs.targets.thumbv7em-none-eabihf.latest;
+        rust-analyzer-nightly = fpkgs.rust-analyzer;
+        rust-toolchain = fpkgs.combine [
+          profile.rustc
           profile.rust-src
           profile.cargo
           profile.rustfmt
           profile.clippy
+          profile.llvm-tools
           std-lib.rust-std
         ];
       in
@@ -36,11 +32,13 @@
         pkgs.mkShell {
           buildInputs = with pkgs; [
             rust-toolchain
-            rust-analyzer
+            rust-analyzer-nightly
 
             # extra cargo tools
             cargo-edit
             cargo-expand
+            cargo-show-asm
+            cargo-binutils
           ];
 
           # set the rust src for rust_analyzer
@@ -49,3 +47,4 @@
       }
     );
 }
+
