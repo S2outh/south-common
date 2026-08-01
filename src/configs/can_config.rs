@@ -48,8 +48,10 @@ impl<'d> CanPeriphConfig<'d> {
             filters,
             configurator,
         };
-        cpc.add_receive_topic_range(definitions::command_msgs::id_range());
-        cpc.add_receive_topic_range(definitions::timesync_msgs::id_range());
+        cpc.add_receive_topic_range(definitions::command_msgs::id_range())
+            .unwrap();
+        cpc.add_receive_topic_range(definitions::timesync_msgs::id_range())
+            .unwrap();
         cpc
     }
     /// # add topic filter
