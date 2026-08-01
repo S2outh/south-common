@@ -21,7 +21,7 @@ jobs:
           mkdir -p "$HOME"
 
           cat > "$HOME/.gitconfig" <<EOF
-          [url "https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/"]
+          [url "https://x-access-token:${{ secrets.ORG_TOKEN }}@github.com/"]
             insteadOf = https://github.com/
             insteadOf = ssh://git@github.com/
             insteadOf = ssh://git@github.com:
@@ -32,12 +32,12 @@ jobs:
 
       - name: Update dependent repositories
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          ORG_TOKEN: ${{ secrets.ORG_TOKEN }}
           LIST_PATH: .github/dependent-repos.txt
         run: |
           set -euo pipefail
-          if [ -z "${GH_TOKEN:-}" ]; then
-            echo "GH_TOKEN secret is required." >&2
+          if [ -z "${ORG_TOKEN:-}" ]; then
+            echo "ORG_TOKEN secret is required." >&2
             exit 1
           fi
           if [ ! -f "$LIST_PATH" ]; then
@@ -100,7 +100,7 @@ jobs:
             fi
             echo "Updating $repo on $branch (path: $cargo_path)"
             workdir="$(mktemp -d)"
-            git clone --branch "$branch" --single-branch "https://x-access-token:${GH_TOKEN}@github.com/${repo}.git" "$workdir"
+            git clone --branch "$branch" --single-branch "https://x-access-token:${ORG_TOKEN}@github.com/${repo}.git" "$workdir"
             pushd "$workdir" >/dev/null
             if [ ! -d "$cargo_path" ]; then
               echo "Cargo path $cargo_path not found for $repo." >&2

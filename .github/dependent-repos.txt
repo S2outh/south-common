@@ -1,7 +1,7 @@
 # Format: owner/repo [branch] [path] (branch defaults to dev, path defaults to .)
 # Use path=... or branch=... to avoid ambiguity (e.g., owner/repo path=crates/app).
 S2outh/upper-sensor
-S2outh/eps-software
+S2outh/eps
 S2outh/lower-sensor
 S2outh/pyro
 S2outh/umbilical
