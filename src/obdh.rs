@@ -237,9 +237,9 @@ where
             timesync_answer.priority.saturating_add(1),
             Ordering::Release,
         );
-        let one_way_delay = (ts.as_micros() - self.com_channels.req_time.load(Ordering::Acquire))
-            - (timesync_answer.unix_time_snd - timesync_answer.unix_time_recv);
-        let time_ref = timesync_answer.unix_time_snd + one_way_delay - ts.as_micros();
+        let round_trip_time = (ts.as_micros() - self.com_channels.req_time.load(Ordering::Acquire))
+            .saturating_sub(timesync_answer.unix_time_snd - timesync_answer.unix_time_recv);
+        let time_ref = timesync_answer.unix_time_snd + (round_trip_time / 2) - ts.as_micros();
         self.com_channels
             .time_ref
             .store(time_ref, Ordering::Release);

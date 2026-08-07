@@ -48,17 +48,17 @@ pub fn accel_f32(raw: &AccelRaw) -> Vector3f32 {
     };
 
     Vector3f32 {
-        x: if calib_full.x < *IMU_ACCEL_SCALING_THRESHOLD {
+        x: if calib_full.x.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.x
         } else {
             calib_full.x
         },
-        y: if calib_full.y < *IMU_ACCEL_SCALING_THRESHOLD {
+        y: if calib_full.y.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.y
         } else {
             calib_full.y
         },
-        z: if calib_full.z < *IMU_ACCEL_SCALING_THRESHOLD {
+        z: if calib_full.z.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.z
         } else {
             calib_full.z

@@ -4,8 +4,8 @@ use chell::*;
 #[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "ground", derive(serde::Serialize))]
 pub struct AccelRaw {
-    pub accel_full_range: Vector3i16,
     pub accel_low_range: Vector3i16,
+    pub accel_full_range: Vector3i16,
 }
 
 impl From<([i16; 3], [i16; 3])> for AccelRaw {

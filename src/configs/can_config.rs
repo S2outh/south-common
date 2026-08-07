@@ -75,7 +75,7 @@ impl<'d> CanPeriphConfig<'d> {
         // I don't know if this is due to bosch engineers beeing high or due to embassy devs being
         // high, however I do know that _someone_ was high.
         let filter = FilterType::Range {
-            from: StandardId::new(range.1).unwrap(),
+            from: StandardId::new(range.1 - 1).unwrap(),
             to: StandardId::new(range.0).unwrap(),
         };
         let standard_filter = StandardFilter {
