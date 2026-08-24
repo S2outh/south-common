@@ -1,4 +1,4 @@
-use chell::*;
+use chell::beacon;
 
 // # Primary Lst
 beacon!(
