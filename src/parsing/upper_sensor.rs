@@ -1,10 +1,11 @@
 use lsm6dsv32::config::{FifoDisabled, ImuConfig, Int1Disabled, Int2Disabled};
 use spin::LazyLock;
 
+use nalgebra as na;
+
 use crate::{
     configs::{imu_config, mag_config},
     types::{
-        Vector3f32, Vector3f64, Vector3i16, Vector3i32,
         upper_sensor::{AccelRaw, LLH},
     },
 };
@@ -23,56 +24,56 @@ static MAG_CONFIG: LazyLock<rm3100::config::Config> = LazyLock::new(mag_config::
 static MAG_SCALING: LazyLock<f32> = LazyLock::new(|| MAG_CONFIG.calc_scaling_factor());
 
 // Imu
-pub fn gyro_f32(raw: &Vector3i16) -> Vector3f32 {
-    Vector3f32 {
-        x: raw.x as f32 * *GYRO_SCALING,
-        y: raw.y as f32 * *GYRO_SCALING,
-        z: raw.z as f32 * *GYRO_SCALING,
-    }
+pub fn gyro_f32(raw: &na::Vector3<i16>) -> na::Vector3<f32> {
+    na::Vector3::new(
+        raw.x as f32 * *GYRO_SCALING,
+        raw.y as f32 * *GYRO_SCALING,
+        raw.z as f32 * *GYRO_SCALING,
+    )
 }
 
-pub fn accel_f32(raw: &AccelRaw) -> Vector3f32 {
+pub fn accel_f32(raw: &AccelRaw) -> na::Vector3<f32> {
     let raw_low = raw.accel_low_range;
     let raw_full = raw.accel_full_range;
 
-    let calib_low = Vector3f32 {
-        x: raw_low.x as f32 * *ACCEL_LOW_RANGE_SCALING,
-        y: raw_low.y as f32 * *ACCEL_LOW_RANGE_SCALING,
-        z: raw_low.z as f32 * *ACCEL_LOW_RANGE_SCALING,
-    };
+    let calib_low = na::Vector3::new(
+        raw_low.x as f32 * *ACCEL_LOW_RANGE_SCALING,
+        raw_low.y as f32 * *ACCEL_LOW_RANGE_SCALING,
+        raw_low.z as f32 * *ACCEL_LOW_RANGE_SCALING,
+    );
 
-    let calib_full = Vector3f32 {
-        x: raw_full.x as f32 * *ACCEL_FULL_RANGE_SCALING,
-        y: raw_full.y as f32 * *ACCEL_FULL_RANGE_SCALING,
-        z: raw_full.z as f32 * *ACCEL_FULL_RANGE_SCALING,
-    };
+    let calib_full = na::Vector3::new(
+        raw_full.x as f32 * *ACCEL_FULL_RANGE_SCALING,
+        raw_full.y as f32 * *ACCEL_FULL_RANGE_SCALING,
+        raw_full.z as f32 * *ACCEL_FULL_RANGE_SCALING,
+    );
 
-    Vector3f32 {
-        x: if calib_full.x.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
+    na::Vector3::new(
+        if calib_full.x.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.x
         } else {
             calib_full.x
         },
-        y: if calib_full.y.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
+        if calib_full.y.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.y
         } else {
             calib_full.y
         },
-        z: if calib_full.z.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
+        if calib_full.z.abs() < *IMU_ACCEL_SCALING_THRESHOLD {
             calib_low.z
         } else {
             calib_full.z
         },
-    }
+    )
 }
 
 // Magneto
-pub fn mag_f32(raw: &Vector3i32) -> Vector3f32 {
-    Vector3f32 {
-        x: raw.x as f32 * *MAG_SCALING,
-        y: raw.y as f32 * *MAG_SCALING,
-        z: raw.z as f32 * *MAG_SCALING,
-    }
+pub fn mag_f32(raw: &na::Vector3<i32>) -> na::Vector3<f32> {
+    na::Vector3::new(
+        raw.x as f32 * *MAG_SCALING,
+        raw.y as f32 * *MAG_SCALING,
+        raw.z as f32 * *MAG_SCALING,
+    )
 }
 
 // Baro
@@ -93,15 +94,15 @@ pub fn baro_pressure_convert_pa(v: &u16) -> f32 {
 }
 
 // GPS
-pub fn ecef_cm_to_m(ecef_cm: &Vector3i32) -> Vector3f64 {
-    Vector3f64 {
-        x: ecef_cm.x as f64 * 0.01,
-        y: ecef_cm.y as f64 * 0.01,
-        z: ecef_cm.z as f64 * 0.01,
-    }
+pub fn ecef_cm_to_m(ecef_cm: &na::Vector3<i32>) -> na::Vector3<f64> {
+    na::Vector3::new(
+        ecef_cm.x as f64 * 0.01,
+        ecef_cm.y as f64 * 0.01,
+        ecef_cm.z as f64 * 0.01,
+    )
 }
 
-pub fn ecef_cm_to_llh(ecef_cm: &Vector3i32) -> LLH {
+pub fn ecef_cm_to_llh(ecef_cm: &na::Vector3<i32>) -> LLH {
     // Returns: (latitude_deg, longitude_deg, height_m) on WGS84.
     const A: f64 = 6_378_137.0;
     const F: f64 = 1.0 / 298.257_223_563;

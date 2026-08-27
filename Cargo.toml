@@ -15,7 +15,7 @@ ground = ["chell/ground", "serde", "erased-serde" ]
 timesync = [ "defmt", "embassy-net", "embassy-time", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
 
 [dependencies]
-chell = { git = "https://github.com/S2outh/chell-sys.git" }
+chell = { git = "https://github.com/S2outh/chell-sys.git", features = ["nalgebra"] }
 
 # config
 lsm6dsv32 = { git = "https://github.com/S2outh/imu-driver.git", default-features = false }
@@ -30,6 +30,7 @@ embassy-futures = { version = "0.1.2", optional = true }
 embassy-time = { version = "0.5.1", features = [ "defmt" ], optional = true }
 embassy-sync = { version = "0.8.0", features = ["defmt"], optional = true }
 defmt = { version = "1.1", optional = true }
+nalgebra = { version = "0.35.0", default-features = false, features = ["serde-serialize-no-std"] }
 heapless = { version = "0.9", default-features = false, optional = true }
 portable-atomic = { version = "1.13", optional = true }
 embedded-can = { version = "0.4.1", optional = true }

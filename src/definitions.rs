@@ -1,4 +1,5 @@
 use chell::chell_definition;
+use nalgebra as na;
 use crate::types;
 use crate::parsing;
 
@@ -89,8 +90,8 @@ pub mod telemetry {
     mod upper_sensor {
 
         #[chv(
-            types::Vector3i32,
-            m(types::Vector3f64, parsing::upper_sensor::ecef_cm_to_m),
+            na::Vector3<i32>,
+            m(na::Vector3<f64>, parsing::upper_sensor::ecef_cm_to_m),
             llh(
                 types::upper_sensor::LLH,
                 parsing::upper_sensor::ecef_cm_to_llh
@@ -98,22 +99,22 @@ pub mod telemetry {
         )]
         struct Pos;
 
-        #[chv(types::Vector3i32)]
+        #[chv(na::Vector3<i32>)]
         struct Vel;
 
-        #[chv(types::Vector3i32)]
+        #[chv(na::Vector3<i32>)]
         struct Accel;
 
         mod imu1 {
             #[chv(
                 types::upper_sensor::AccelRaw,
-                mps(types::Vector3f32, parsing::upper_sensor::accel_f32)
+                mps(na::Vector3<f32>, parsing::upper_sensor::accel_f32)
             )]
             struct Accel;
 
             #[chv(
-                types::Vector3i16,
-                rps(types::Vector3f32, parsing::upper_sensor::gyro_f32)
+                na::Vector3<i16>,
+                rps(na::Vector3<f32>, parsing::upper_sensor::gyro_f32)
             )]
             struct Gyro;
         }
@@ -121,21 +122,21 @@ pub mod telemetry {
         mod imu2 {
             #[chv(
                 types::upper_sensor::AccelRaw,
-                mps(types::Vector3f32, parsing::upper_sensor::accel_f32)
+                mps(na::Vector3<f32>, parsing::upper_sensor::accel_f32)
             )]
             struct Accel;
 
             #[chv(
-                types::Vector3i16,
-                rps(types::Vector3f32, parsing::upper_sensor::gyro_f32)
+                na::Vector3<i16>,
+                rps(na::Vector3<f32>, parsing::upper_sensor::gyro_f32)
             )]
             struct Gyro;
         }
 
         mod gps {
             #[chv(
-                types::Vector3i32,
-                m(types::Vector3f64, parsing::upper_sensor::ecef_cm_to_m),
+                na::Vector3<i32>,
+                m(na::Vector3<f64>, parsing::upper_sensor::ecef_cm_to_m),
                 llh(
                     types::upper_sensor::LLH,
                     parsing::upper_sensor::ecef_cm_to_llh
@@ -143,7 +144,7 @@ pub mod telemetry {
             )]
             struct Pos;
 
-            #[chv(types::Vector3i32)]
+            #[chv(na::Vector3<i32>)]
             struct Vel;
 
             #[chv(u8, sv(u8, |v| parsing::mask(2, 6, v)), nav(u8, |v| parsing::mask(0, 2, v)))]
@@ -154,8 +155,8 @@ pub mod telemetry {
         struct Baro;
 
         #[chv(
-            types::Vector3i32,
-            mt(types::Vector3f32, parsing::upper_sensor::mag_f32)
+            na::Vector3<i32>,
+            mt(na::Vector3<f32>, parsing::upper_sensor::mag_f32)
         )]
         struct Magneto;
 
