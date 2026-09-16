@@ -2,14 +2,14 @@ use bitflags::bitflags;
 use chell::*;
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PyroChannel {
     Channel1,
     Channel2,
 }
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PyroCommand {
     Arm(PyroChannel),
     Disarm(PyroChannel),
@@ -17,7 +17,7 @@ pub enum PyroCommand {
 }
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub enum PyroState {
     Disarmed,
     Armed,

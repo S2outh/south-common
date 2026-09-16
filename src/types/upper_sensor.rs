@@ -2,7 +2,7 @@ use chell::*;
 use nalgebra as na;
 
 #[derive(ChellValue, Clone, Copy, Debug)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct AccelRaw {
     pub accel_low_range: na::Vector3<i16>,
     pub accel_full_range: na::Vector3<i16>,
@@ -18,7 +18,16 @@ impl From<([i16; 3], [i16; 3])> for AccelRaw {
 }
 
 #[derive(ChellValue, Clone, Copy, Debug)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
+pub struct Kinematics {
+    pub position: na::Vector3<f64>,
+    pub velocity: na::Vector3<f32>,
+    pub acceleration: na::Vector3<f32>,
+}
+
+
+#[derive(ChellValue, Clone, Copy, Debug)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct LLH {
     pub lat: f64,
     pub lon: f64,

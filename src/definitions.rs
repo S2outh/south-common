@@ -90,20 +90,13 @@ pub mod telemetry {
     mod upper_sensor {
 
         #[chv(
-            na::Vector3<i32>,
-            m(na::Vector3<f64>, parsing::upper_sensor::ecef_cm_to_m),
+            types::upper_sensor::Kinematics,
             llh(
                 types::upper_sensor::LLH,
-                parsing::upper_sensor::ecef_cm_to_llh
+                |v: &types::upper_sensor::Kinematics| parsing::upper_sensor::ecef_to_llh(&v.position)
             )
         )]
-        struct Pos;
-
-        #[chv(na::Vector3<i32>)]
-        struct Vel;
-
-        #[chv(na::Vector3<i32>)]
-        struct Accel;
+        struct KinematicState;
 
         mod imu1 {
             #[chv(
@@ -139,7 +132,7 @@ pub mod telemetry {
                 m(na::Vector3<f64>, parsing::upper_sensor::ecef_cm_to_m),
                 llh(
                     types::upper_sensor::LLH,
-                    parsing::upper_sensor::ecef_cm_to_llh
+                    |v| parsing::upper_sensor::ecef_to_llh(&parsing::upper_sensor::ecef_cm_to_m(v))
                 )
             )]
             struct Pos;
@@ -200,5 +193,69 @@ pub mod telemetry {
             temp_c(f32, parsing::lower_sensor::celcius)
         )]
         struct Adc;
+    }
+}
+
+
+// ground only definitiona
+#[chell_definition(id = 0)]
+mod groundstation {
+    mod primary_lst {
+        #[chv(u32)]
+        struct Uptime;
+
+        #[chv(i8)]
+        struct Rssi;
+
+        #[chv(u8)]
+        struct Lqi;
+
+        #[chv(u32)]
+        struct PacketsSent;
+
+        #[chv(u32)]
+        struct PacketsGood;
+
+        #[chv(u32)]
+        struct PacketsRejectedChecksum;
+
+        #[chv(u32)]
+        struct PacketsRejectedOther;
+    }
+
+    mod secondary_lst {
+        #[chv(u32)]
+        struct Uptime;
+
+        #[chv(i8)]
+        struct Rssi;
+
+        #[chv(u8)]
+        struct Lqi;
+
+        #[chv(u32)]
+        struct PacketsSent;
+
+        #[chv(u32)]
+        struct PacketsGood;
+
+        #[chv(u32)]
+        struct PacketsRejectedChecksum;
+
+        #[chv(u32)]
+        struct PacketsRejectedOther;
+    }
+
+    mod umbilical {
+        #[chv(u32)]
+        struct TelecommandCounter;
+
+        #[chv(f32)]
+        struct InternalTemperature;
+    }
+
+    mod trex {
+        #[chv(types::trex::Command)]
+        struct Command;
     }
 }

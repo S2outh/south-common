@@ -2,7 +2,7 @@ use bitflags::bitflags;
 use chell::*;
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum EPSCommand {
     EnableSource(FlipFlopInput),
     DisableSource(FlipFlopInput),
@@ -13,7 +13,7 @@ pub enum EPSCommand {
 }
 
 #[derive(ChellValue, Clone, Copy)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum FlipFlopInput {
     Bat1,
     Bat2,
@@ -21,7 +21,7 @@ pub enum FlipFlopInput {
 }
 
 #[derive(ChellValue, Clone, Copy)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Sink {
     Carrier,     // pa5
     Umbilical,   // pa3

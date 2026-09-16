@@ -14,6 +14,8 @@ ground = ["chell/ground", "serde", "erased-serde" ]
 
 timesync = [ "defmt", "embassy-net", "embassy-time", "sntpc", "sntpc-net-embassy", "sntpc-time-embassy" ]
 
+serde = [ "dep:serde" ]
+
 [dependencies]
 chell = { git = "https://github.com/S2outh/chell-sys.git", features = ["nalgebra"] }
 
@@ -35,9 +37,11 @@ heapless = { version = "0.9", default-features = false, optional = true }
 portable-atomic = { version = "1.13", optional = true }
 embedded-can = { version = "0.4.1", optional = true }
 
+# serde
+serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
+
 # ground
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
-serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
 bitflags = { version = "2.13.1" }
 paste = "1.0.15"
 

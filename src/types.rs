@@ -2,13 +2,14 @@ pub mod eps;
 pub mod lower_sensor;
 pub mod pyro;
 pub mod upper_sensor;
+pub mod trex;
 
 use chell::*;
 
 use crate::types::{eps::EPSCommand, pyro::PyroCommand};
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct Timesync {
     pub request_id: u8,
     pub priority: u8,
@@ -18,7 +19,7 @@ pub struct Timesync {
 
 // # Telecommands
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Telecommand {
     RocketLST(LSTCommand),
     EPS(EPSCommand),
@@ -57,7 +58,7 @@ derive_subsys_cmd!(Telecommand::EPS, EPSCommand);
 derive_subsys_cmd!(Telecommand::Pyro, PyroCommand);
 
 #[derive(ChellValue)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum LSTCommand {
     Reboot,
 }

@@ -1,7 +1,7 @@
 use chell::*;
 
 #[derive(ChellValue, Clone, Copy)]
-#[cfg_attr(feature = "ground", derive(serde::Serialize))]
+#[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct LowerSensorAdcValues {
     pub pres_1_ch: i16,
     pub pres_2_ch: i16,
