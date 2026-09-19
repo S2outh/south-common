@@ -257,5 +257,8 @@ mod groundstation {
     mod trex {
         #[chv(types::trex::Command)]
         struct Command;
+
+        #[chv(na::Vector2<f64>)]
+        struct Angles;
     }
 }
