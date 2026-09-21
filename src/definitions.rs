@@ -260,5 +260,11 @@ mod groundstation {
 
         #[chv(na::Vector2<f64>)]
         struct Angles;
+
+        #[chv(na::Vector2<f64>)]
+        struct AngularVelocities;
+
+        #[chv(types::trex::State)]
+        struct State;
     }
 }
