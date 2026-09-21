@@ -9,7 +9,7 @@ pub enum Command {
 }
 
 
-#[derive(ChellValue)]
+#[derive(ChellValue, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum State {
     Manual,
