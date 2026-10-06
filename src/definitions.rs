@@ -98,6 +98,9 @@ pub mod telemetry {
         )]
         struct KinematicState;
 
+        #[chv(na::Quaternion<f32>)]
+        struct Orientation;
+
         mod imu1 {
             #[chv(
                 types::upper_sensor::AccelRaw,
