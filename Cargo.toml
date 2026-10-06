@@ -20,7 +20,7 @@ chell = { git = "https://github.com/S2outh/chell-sys.git", features = ["nalgebra
 # config
 lsm6dsv32 = { git = "https://github.com/S2outh/imu-driver.git", default-features = false }
 rm3100 = { git = "https://github.com/S2outh/magneto-driver.git", default-features = false }
-spin = { version = "0.12.2", features = ["lazy", "portable-atomic"], default-features = false }
+spin = { version = "0.12.3", features = ["lazy", "portable-atomic"], default-features = false }
 libm = { version = "0.2.16" }
 
 # air
@@ -32,17 +32,17 @@ embassy-sync = { version = "0.8.0", features = ["defmt"], optional = true }
 defmt = { version = "1.1", optional = true }
 nalgebra = { version = "0.35.0", default-features = false, features = ["serde-serialize-no-std"] }
 heapless = { version = "0.9", default-features = false, optional = true }
-portable-atomic = { version = "1.13", optional = true }
+portable-atomic = { version = "1.15", optional = true }
 embedded-can = { version = "0.4.1", optional = true }
 
 # serde
-serde = { version = "1.0.228", default-features = false, features = ["derive"], optional = true }
+serde = { version = "1.0.229", default-features = false, features = ["derive"], optional = true }
 
 # ground
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
-bitflags = { version = "2.13.1" }
+bitflags = { version = "2.13.2" }
 paste = "1.0.15"
 
 [build-dependencies]
-serde_json = "1.0.150"
-serde = { version = "1.0.228", features = ["derive"] }
+serde_json = "1.0.151"
+serde = { version = "1.0.229", features = ["derive"] }
