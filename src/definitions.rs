@@ -258,6 +258,9 @@ mod groundstation {
     }
 
     mod trex {
+        #[chv(types::trex::StateCmd)]
+        struct ChangeState;
+
         #[chv(types::trex::Command)]
         struct Command;
 
