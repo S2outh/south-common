@@ -6,6 +6,7 @@ use nalgebra as na;
 pub enum Command {
     Set(na::Vector2<f64>),
     Rotate(na::Vector2<f64>),
+    RotateMoving(na::Vector2<f64>, na::Vector2<f64>),
 }
 
 
