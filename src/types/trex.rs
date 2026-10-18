@@ -5,6 +5,7 @@ use nalgebra as na;
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum Command {
     Set(na::Vector2<f64>),
+    SetMoving(na::Vector2<f64>, na::Vector2<f64>),
     Rotate(na::Vector2<f64>),
     RotateMoving(na::Vector2<f64>, na::Vector2<f64>),
 }
