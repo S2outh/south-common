@@ -3,6 +3,7 @@ use nalgebra as na;
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum Command {
     Set(na::Vector2<f64>),
     SetMoving(na::Vector2<f64>, na::Vector2<f64>),
@@ -10,9 +11,9 @@ pub enum Command {
     RotateMoving(na::Vector2<f64>, na::Vector2<f64>),
 }
 
-
 #[derive(ChellValue, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum State {
     Halted,
     Manual,

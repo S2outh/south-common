@@ -1,8 +1,10 @@
+#[macro_use]
+pub mod type_macros;
 pub mod eps;
 pub mod lower_sensor;
 pub mod pyro;
-pub mod upper_sensor;
 pub mod trex;
+pub mod upper_sensor;
 
 use chell::*;
 
@@ -20,6 +22,7 @@ pub struct Timesync {
 // # Telecommands
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum Telecommand {
     RocketLST(LSTCommand),
     EPS(EPSCommand),
@@ -59,6 +62,7 @@ derive_subsys_cmd!(Telecommand::Pyro, PyroCommand);
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum LSTCommand {
     Reboot,
 }

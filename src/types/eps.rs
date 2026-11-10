@@ -3,6 +3,7 @@ use chell::*;
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum EPSCommand {
     EnableSource(FlipFlopInput),
     DisableSource(FlipFlopInput),
@@ -14,6 +15,7 @@ pub enum EPSCommand {
 
 #[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum FlipFlopInput {
     Bat1,
     Bat2,
@@ -22,6 +24,7 @@ pub enum FlipFlopInput {
 
 #[derive(ChellValue, Clone, Copy)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum Sink {
     Carrier,     // pa5
     Umbilical,   // pa3
@@ -32,8 +35,8 @@ pub enum Sink {
     BackupSink,  // pa4
 }
 
-// # Telemetry types
-bitflags! {
+// # Which sink is enabled
+key_value_bitflags! {
     pub struct SinkEnabled: u8 {
         const CARRIER       = 1 << 0;
         const UMBILICAL     = 1 << 1;
@@ -45,7 +48,8 @@ bitflags! {
     }
 }
 
-bitflags! {
+// # Which source is enabled
+key_value_bitflags! {
     pub struct SourceEnabled: u8 {
         const BAT_1    = 1 << 0;
         const BAT_2    = 1 << 1;

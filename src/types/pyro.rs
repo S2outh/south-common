@@ -3,6 +3,7 @@ use chell::*;
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum PyroChannel {
     Channel1,
     Channel2,
@@ -10,6 +11,7 @@ pub enum PyroChannel {
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[repr(u8)]
 pub enum PyroCommand {
     Arm(PyroChannel),
     Disarm(PyroChannel),
@@ -18,6 +20,7 @@ pub enum PyroCommand {
 
 #[derive(ChellValue)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
+#[repr(u8)]
 pub enum PyroState {
     Disarmed,
     Armed,
@@ -25,7 +28,7 @@ pub enum PyroState {
 }
 
 // # Telemetry types
-bitflags! {
+key_value_bitflags! {
     pub struct StateFlags: u8 {
         const ARMD_A = 1 << 0;
         const FIRE_A = 1 << 1;

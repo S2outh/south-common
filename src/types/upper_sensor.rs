@@ -25,7 +25,6 @@ pub struct Kinematics {
     pub acceleration: na::Vector3<f32>,
 }
 
-
 #[derive(ChellValue, Clone, Copy, Debug)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize))]
 pub struct LLH {

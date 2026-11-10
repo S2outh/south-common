@@ -5,9 +5,7 @@ use nalgebra as na;
 
 use crate::{
     configs::{imu_config, mag_config},
-    types::{
-        upper_sensor::{AccelRaw, LLH},
-    },
+    types::upper_sensor::{AccelRaw, LLH},
 };
 
 static IMU_CONFIG: LazyLock<ImuConfig<FifoDisabled, Int1Disabled, Int2Disabled>> =

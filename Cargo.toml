@@ -42,7 +42,3 @@ serde = { version = "1.0.229", default-features = false, features = ["derive"], 
 erased-serde = { version = "0.4.10", default-features = false, features = ["alloc"], optional = true }
 bitflags = { version = "2.13.2" }
 paste = "1.0.15"
-
-[build-dependencies]
-serde_json = "1.0.151"
-serde = { version = "1.0.229", features = ["derive"] }
