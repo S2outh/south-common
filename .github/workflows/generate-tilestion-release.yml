@@ -7,7 +7,7 @@ jobs:
   generate-tilestion-release:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - name: Checkout list from dev
         uses: actions/checkout@v6
@@ -26,7 +26,16 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "GITHUB_REF_NAME" \
-            --title "${GITHUB_REF_NAME}" \
+          set -euo pipefail
+          tag="tilestion-$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+
+          # ./result is a symlink into the nix store; dereference it into a
+          # properly named file so the release asset gets a sensible name.
+          mkdir -p dist
+          cp -L ./result dist/telemetry.json
+
+          gh release create "$tag" \
+            --target "${GITHUB_SHA}" \
+            --title "$tag" \
             --generate-notes \
-            ./result
+            dist/telemetry.json
