@@ -6,6 +6,7 @@
     systems.url = "github:nix-systems/default";
     flake-parts.url = "github:hercules-ci/flake-parts";
     fenix.url = "github:nix-community/fenix/monthly";
+    chell-tilestion-transcoder.url = "github:S2outh/chell-tilestion-transcoder";
   };
 
   outputs = inputs@{ flake-parts, ... }:
@@ -42,6 +43,11 @@
 
           # set the rust src for rust_analyzer
           RUST_SRC_PATH = "${rust-toolchain}/lib/rustlib/src/rust/library";
+        };
+
+        packages.tilestion-export = pkgs.callPackage ./tilestion-export.nix {
+          chell-tilestion-transcoder = inputs'.chell-tilestion-transcoder.packages.default;
+          inherit rust-toolchain;
         };
       };
     });

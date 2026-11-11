@@ -1,0 +1,32 @@
+name: Generate tilestion release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-tilestion-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout list from dev
+        uses: actions/checkout@v6
+
+      - name: Install Nix
+        uses: NixOS/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - name: Build tilestion export
+        shell: bash
+        run: nix build .#tilestion-export
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "GITHUB_REF_NAME" \
+            --title "${GITHUB_REF_NAME}" \
+            --generate-notes \
+            ./result

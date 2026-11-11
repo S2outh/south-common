@@ -130,13 +130,14 @@ pub mod telemetry {
 
         mod gps {
             #[def(na::Vector3<i32>)]
-            #[parser(m -> na::Vector3<f64> parsing::upper_sensor::ecef_cm_to_m)]
+            #[parser(m -> na::Vector3<f64> parsing::upper_sensor::phoenix_pos_to_m)]
             #[parser(llh -> types::upper_sensor::LLH
-                |v| parsing::upper_sensor::ecef_to_llh(&parsing::upper_sensor::ecef_cm_to_m(v))
+                |v| parsing::upper_sensor::ecef_to_llh(&parsing::upper_sensor::phoenix_pos_to_m(v))
             )]
             struct Pos;
 
             #[def(na::Vector3<i32>)]
+            #[parser(mps -> na::Vector3<f64> parsing::upper_sensor::phoenix_vel_to_mps)]
             struct Vel;
 
             #[def(u8)]

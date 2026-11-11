@@ -111,7 +111,7 @@ checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 [[package]]
 name = "chell"
 version = "9.3.1"
-source = "git+https://github.com/S2outh/chell-sys.git#ee1000f8a70f311975565e0bb8506b8fba62bf23"
+source = "git+https://github.com/S2outh/chell-sys.git#ea3c043e1baf369ba66075b77603351f4922474b"
 dependencies = [
  "chell-macros",
  "erased-serde",
@@ -123,7 +123,7 @@ dependencies = [
 [[package]]
 name = "chell-macros"
 version = "9.3.1"
-source = "git+https://github.com/S2outh/chell-sys.git#ee1000f8a70f311975565e0bb8506b8fba62bf23"
+source = "git+https://github.com/S2outh/chell-sys.git#ea3c043e1baf369ba66075b77603351f4922474b"
 dependencies = [
  "heck",
  "proc-macro2",
