@@ -9,11 +9,11 @@
         "systems": "systems"
       },
       "locked": {
-        "lastModified": 1794414077,
-        "narHash": "sha256-wuJj2aVj12Wb8myeqhQHERRI9HEkDjYk506HBr3dWI4=",
+        "lastModified": 1794439940,
+        "narHash": "sha256-ksJvSvk0zC4pHzbeD9hGj0pswbpF5nhFUxxcPSCa0GA=",
         "owner": "S2outh",
         "repo": "chell-tilestion-transcoder",
-        "rev": "186a2c5872cf752db46609cef84d2bc943470529",
+        "rev": "f6be507ad26e2caa2db3b2330c0eefe6b31ccf9c",
         "type": "github"
       },
       "original": {
@@ -203,11 +203,11 @@
     },
     "nixpkgs_4": {
       "locked": {
-        "lastModified": 1793726008,
-        "narHash": "sha256-jQp1wKvbwWdLBASTXkSi/VYmDJ5AbBi1WvcMt9HWJC8=",
+        "lastModified": 1794042290,
+        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1d060086d60cb76a40cf37109f979d88a5bd6396",
+        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
         "type": "github"
       },
       "original": {

@@ -1,5 +1,4 @@
 (
-  version: "v0.1",
   source: "https://github.com/S2outh/south-common",
   provider: (
     id: "south-nats",

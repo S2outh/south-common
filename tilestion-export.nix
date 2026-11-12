@@ -9,10 +9,18 @@
   version? "latest",
   ...
 }:
-stdenv.mkDerivation {
-  inherit pname version;
+let
+  # set src explicitely to git tracked files
+  src = lib.fileset.toSource {
+    root = ./.;
+    fileset = lib.fileset.gitTracked ./.;
+  };
 
-  src = lib.cleanSource ./.;
+  # get short hash from nix store path
+  shortHash = builtins.substring 0 7 (baseNameOf src);
+in
+stdenv.mkDerivation {
+  inherit pname version src;
 
   cargoDeps = rustPlatform.importCargoLock {
     lockFile = ./Cargo.lock;
@@ -25,6 +33,8 @@ stdenv.mkDerivation {
     chell-tilestion-transcoder
   ];
 
+  env.HASH = shortHash;
+
   buildPhase = ''
     runHook preBuild
 
@@ -34,12 +44,14 @@ stdenv.mkDerivation {
     
     INPUT="target/$TARGET_ARCH/doc/south_common.json"
     META="tilestion-meta.ron"
+    VERSION="south-tmtc-$(date -u +%Y%m%d)-$HASH"
 
-    chell-tilestion-transcoder $INPUT $META \
+    chell-tilestion-transcoder \
+      -v $VERSION $INPUT $META \
       definitions::command_msgs \
       definitions::timesync_msgs \
       definitions::telemetry \
-      definitions::groundstation > telemetry.json
+      definitions::groundstation > export.json
 
     runHook postBuild
   '';
@@ -47,7 +59,7 @@ stdenv.mkDerivation {
   installPhase = ''
     runHook preInstall
 
-    cp telemetry.json $out
+    cp export.json $out
 
     runHook postInstall
   '';

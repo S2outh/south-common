@@ -27,15 +27,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          tag="tilestion-$(date -u +%Y%m%d)-${GITHUB_SHA::7}"
+
+          # use version specified in file as tag
+          TAG=$(cat ./result | jq -r .version)
 
           # ./result is a symlink into the nix store; dereference it into a
           # properly named file so the release asset gets a sensible name.
           mkdir -p dist
           cp -L ./result dist/telemetry.json
 
-          gh release create "$tag" \
+          gh release create "$TAG" \
             --target "${GITHUB_SHA}" \
-            --title "$tag" \
+            --title "GCS export version $TAG" \
             --generate-notes \
             dist/telemetry.json
