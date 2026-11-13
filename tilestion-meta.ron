@@ -44,18 +44,28 @@
     "SinkEnabledKeyValue": (telemetry_type: "flags", flag_names: Some(["CARRIER", "UMBILICAL", "ROCKET_LST_1", "ROCKET_LST_2", "SENSOR_LOWER", "ROCKET_H_D", "BACKUP_SINK"])),
     "StateFlagsKeyValue": (telemetry_type: "flags", flag_names: Some(["ARMD_A", "FIRE_A", "ARMD_B", "FIRE_B"])),
 
-    "()": (telemetry_type: "empty"),
+    "Telecommand": (telemetry_type: "south-telecommand"),
+    
+    "Command": (telemetry_type: "south-trex-command"),
 
-    "Telecommand": (telemetry_type: "object"),
-    "Command": (telemetry_type: "object"),
-    "State": (telemetry_type: "object"),
+    "State": (telemetry_type: "text"),
+
+    "()": (telemetry_type: "south-unit"),
+
     "Timesync": (telemetry_type: "object"),
   },
   parsers: {
     "number": "cbor-timestamped-number",
     "vector": "cbor-timestamped-vector",
     "flags": "cbor-timestamped-flags",
-    "empty": "cbor-timestamped-empty",
+
+    "text": "cbor-bare-text",
+
+    "south-telecommand": "cbor-bare-south-telecommand",
+    "south-trex-command": "cbor-bare-south-trex-command",
+
+    "south-unit": "cbor-bare-south-unit",
+
     "object": "cbor-timestamped-object",
   },
 )
