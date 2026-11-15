@@ -50,7 +50,7 @@
 
     "State": (telemetry_type: "text"),
 
-    "()": (telemetry_type: "south-unit"),
+    "()": (telemetry_type: "empty"),
 
     "Timesync": (telemetry_type: "object"),
   },
@@ -64,7 +64,7 @@
     "south-telecommand": "cbor-bare-south-telecommand",
     "south-trex-command": "cbor-bare-south-trex-command",
 
-    "south-unit": "cbor-bare-south-unit",
+    "empty": "cbor-bare-empty",
 
     "object": "cbor-timestamped-object",
   },
